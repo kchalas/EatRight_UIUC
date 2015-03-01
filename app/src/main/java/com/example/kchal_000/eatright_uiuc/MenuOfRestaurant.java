@@ -1,9 +1,12 @@
 package com.example.kchal_000.eatright_uiuc;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
 public class MenuOfRestaurant extends ActionBarActivity {
@@ -12,6 +15,17 @@ public class MenuOfRestaurant extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_of_restaurant);
+
+        Button back = (Button) findViewById(R.id.buttonBack);
+        back.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent myIntent = new Intent(view.getContext(), RestaurantChoices.class);
+                String name = "juniper";
+                myIntent.putExtra("name", name);
+                startActivityForResult(myIntent, 0);
+            }
+
+        });
     }
 
 

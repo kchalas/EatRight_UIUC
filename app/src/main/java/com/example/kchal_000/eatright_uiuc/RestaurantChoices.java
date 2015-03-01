@@ -23,6 +23,8 @@ public class RestaurantChoices extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant__choices);
+        Intent intent = getIntent();
+        String fName = intent.getStringExtra("name");
 
         Button[] buttons = {
                 (Button) findViewById(button_ids[0]), (Button) findViewById(button_ids[1]),
@@ -35,8 +37,10 @@ public class RestaurantChoices extends ActionBarActivity {
                 (Button) findViewById(button_ids[14]), (Button) findViewById(button_ids[15]),
                 (Button) findViewById(button_ids[16]), (Button) findViewById(button_ids[17]),
         };
-        
+
+
         for(int i = 0; i < buttons.length; i++) {
+            buttons[i].setText(fName);
             buttons[i].setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     Intent myIntent = new Intent(view.getContext(), MenuOfRestaurant.class);
