@@ -45,6 +45,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
         makeAxisLabels(this,maxFiber,maxProtein,size);
+        userInterface(this,size);
     }
 
     public void makeAxisLabels(Context context, float maxFiber, float maxProtein, Point size){
@@ -74,6 +75,32 @@ public class MainActivity extends ActionBarActivity {
         addContentView(origin,new ViewGroup.LayoutParams(50,50));
         addContentView(xmax,new ViewGroup.LayoutParams(50,50));
         addContentView(ymax,new ViewGroup.LayoutParams(50,50));
+    }
+
+    public void userInterface(Context context, Point size){
+        ImageButton add, combine;
+
+        add=new ImageButton(this);
+        add.setBackgroundResource(R.drawable.square);
+        add.setTranslationX(size.x-150);
+        add.setTranslationY(size.y - 400);
+        add.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), RestaurantChoices.class);
+                startActivity(intent);
+            }
+        });
+
+        combine=new ImageButton(this);
+        combine.setBackgroundResource(R.drawable.square);
+        combine.setTranslationX(size.x-310);
+        combine.setTranslationY(size.y - 400);
+
+
+        addContentView(add,new ViewGroup.LayoutParams(150,150));
+        addContentView(combine,new ViewGroup.LayoutParams(150,150));
+
+
     }
 
     public ImageButton toImageButton(final Meal meal, Context context,float ux, float uy){
