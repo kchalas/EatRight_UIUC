@@ -76,17 +76,16 @@ public class MainActivity extends ActionBarActivity {
         addContentView(ymax,new ViewGroup.LayoutParams(50,50));
     }
 
-    public ImageButton toImageButton(Meal meal, Context context,float ux, float uy){
+    public ImageButton toImageButton(final Meal meal, Context context,float ux, float uy){
         ImageButton ib=new ImageButton(context);
 
         ib.setBackgroundResource(R.drawable.point);
-        ib.setTranslationX((meal.getProtein()/meal.getCalories())*uy);
-        ib.setTranslationY((meal.getFiber()/meal.getCalories())*ux);
+        ib.setTranslationX((meal.getProtein() / meal.getCalories()) * uy);
+        ib.setTranslationY((meal.getFiber() / meal.getCalories()) * ux);
         ib.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), DetailActivity.class);
-                String name =getString(R.string.Aux);
-                intent.putExtra("Meal.ID",name);
+                intent.putExtra("Meal.ID",meal.getId());
 
                 startActivity(intent);
             }
