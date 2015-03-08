@@ -90,12 +90,12 @@ public class RestaurantChoices extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public double[] getLocation() {
+    /*public double[] getLocation() {
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();
         return [longitude, latitude];
-    }
+    }*/
 
 }
