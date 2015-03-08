@@ -28,7 +28,7 @@ public class RestaurantChoices extends ActionBarActivity {
             R.id.button13, R.id.button14, R.id.button15, R.id.button16,
             R.id.button17, R.id.button18
     };
-    private ArrayList<RestaurantInfo> rests = new ArrayList<RestaurantInfo>();
+    private ArrayList<RestaurantInfo> rests;
 
     /**private static final String[] rests = {
             "McDonalds", "Subway", "Taco Bell", "Chipotle",
@@ -42,16 +42,16 @@ public class RestaurantChoices extends ActionBarActivity {
         Intent intent = getIntent();
         String fName = intent.getStringExtra("name");
         //double[] location = getLocation();
-        /**
+
         try {
-            rests = apiInterface.getRestaurants(location[0], location[1]);
-            if (rests == null) {
-                rests = apiInterface.getRestaurants(40.11000, -88.22700);
-            }
+            //rests = apiInterface.getRestaurants(location[0], location[1]);
+
+            rests = apiInterface.getRestaurants(40.11000, -88.22700);
+
         }catch(JSONException e){
             //error message
         }
-         **/
+
         Button[] buttons = {
                 (Button) findViewById(button_ids[0]), (Button) findViewById(button_ids[1]),
                 (Button) findViewById(button_ids[2]), (Button) findViewById(button_ids[3]),
