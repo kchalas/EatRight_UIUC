@@ -1,6 +1,8 @@
 package com.example.kchal_000.eatright_uiuc;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -8,6 +10,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import org.json.JSONException;
+
+import java.util.ArrayList;
+
+import api.apiInterface;
+import information.RestaurantInfo;
 
 
 public class RestaurantChoices extends ActionBarActivity {
@@ -19,6 +28,7 @@ public class RestaurantChoices extends ActionBarActivity {
             R.id.button13, R.id.button14, R.id.button15, R.id.button16,
             R.id.button17, R.id.button18
     };
+    private ArrayList<RestaurantInfo> rests = new ArrayList<RestaurantInfo>();
 
     /**private static final String[] rests = {
             "McDonalds", "Subway", "Taco Bell", "Chipotle",
@@ -31,7 +41,17 @@ public class RestaurantChoices extends ActionBarActivity {
         setContentView(R.layout.activity_restaurant__choices);
         Intent intent = getIntent();
         String fName = intent.getStringExtra("name");
-
+        //double[] location = getLocation();
+        /**
+        try {
+            rests = apiInterface.getRestaurants(location[0], location[1]);
+            if (rests == null) {
+                rests = apiInterface.getRestaurants(40.11000, -88.22700);
+            }
+        }catch(JSONException e){
+            //error message
+        }
+         **/
         Button[] buttons = {
                 (Button) findViewById(button_ids[0]), (Button) findViewById(button_ids[1]),
                 (Button) findViewById(button_ids[2]), (Button) findViewById(button_ids[3]),
@@ -45,11 +65,12 @@ public class RestaurantChoices extends ActionBarActivity {
         };
 
 
-        for(int i = 0; i < buttons.length; i++) {
-            buttons[i].setText(fName);
+        for(int i = 0; i < rests.size(); i++) {
+            buttons[i].setText(rests.get(i).getName());
             buttons[i].setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     Intent myIntent = new Intent(view.getContext(), MenuOfRestaurant.class);
+
                     startActivityForResult(myIntent, 0);
                 }
 
@@ -90,12 +111,19 @@ public class RestaurantChoices extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /*public double[] getLocation() {
+    public double[] getLocation() {
+        /**
+         * Location code from
+         * http://stackoverflow.com
+         * /questions/2227292/how-to-get-latitude-and-longitude-
+         * of-the-mobiledevice-in-android
+         */
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();
-        return [longitude, latitude];
-    }*/
+        double[] loc = {latitude, longitude};
+        return loc;
+    }
 
 }
