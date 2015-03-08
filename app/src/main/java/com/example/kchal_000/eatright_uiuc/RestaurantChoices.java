@@ -1,6 +1,7 @@
 package com.example.kchal_000.eatright_uiuc;
 
 import android.content.Intent;
+import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +19,11 @@ public class RestaurantChoices extends ActionBarActivity {
             R.id.button13, R.id.button14, R.id.button15, R.id.button16,
             R.id.button17, R.id.button18
     };
+
+    /**private static final String[] rests = {
+            "McDonalds", "Subway", "Taco Bell", "Chipotle",
+            "Jay Gumbos", "Dunkin Donuts", "Starbucks", "Pizza Hut",
+    };*/
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,4 +89,13 @@ public class RestaurantChoices extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public double[] getLocation() {
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
+        return [longitude, latitude];
+    }
+
 }
