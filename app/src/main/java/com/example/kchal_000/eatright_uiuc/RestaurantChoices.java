@@ -43,14 +43,7 @@ public class RestaurantChoices extends ActionBarActivity {
         String fName = intent.getStringExtra("name");
         //double[] location = getLocation();
 
-        try {
-            //rests = apiInterface.getRestaurants(location[0], location[1]);
-
-            rests = apiInterface.getRestaurants(40.11000, -88.22700);
-
-        }catch(JSONException e){
-            //error message
-        }
+        rests = apiInterface.getRestaurants(40.11000, -88.22700);
 
         Button[] buttons = {
                 (Button) findViewById(button_ids[0]), (Button) findViewById(button_ids[1]),

@@ -13,9 +13,9 @@ import information.RestaurantInfo;
 
 public class APITest extends InstrumentationTestCase{
     public void testYelpAPI() throws Exception{
-        String jsonData = YelpAPI.getRestaurants(40.11000, -88.22700);
-        Log.v("ds", jsonData);
-        assertFalse(jsonData.contains("error"));
+        ArrayList<RestaurantInfo> restaurantList = apiInterface.getRestaurants(40.11000, -88.22700);
+
+        assertTrue(restaurantList.size() > 0);
     }
 
     public void testWolframAPI() throws Exception{
@@ -23,7 +23,7 @@ public class APITest extends InstrumentationTestCase{
         item.setName("Big Mac");
         item.setRestaurantName("Mcdonalds");
 
-        String xmlData = WolframAPI.getNutritionInfo(item);
+        String xmlData = apiInterface.getNutritionInfo(item);
 
         assertTrue(xmlData.contains("success='true'"));
     }
