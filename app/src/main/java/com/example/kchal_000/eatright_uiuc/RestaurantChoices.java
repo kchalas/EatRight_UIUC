@@ -59,7 +59,11 @@ public class RestaurantChoices extends ActionBarActivity {
 
 
         for(int i = 0; i < rests.size(); i++) {
-            buttons[i].setText(rests.get(i).getName());
+            String nm = rests.get(i).getName();
+            if(nm.length() > 10){
+                nm = nm.substring(0,10);
+            }
+            buttons[i].setText(nm);
             buttons[i].setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     Intent myIntent = new Intent(view.getContext(), MenuOfRestaurant.class);
