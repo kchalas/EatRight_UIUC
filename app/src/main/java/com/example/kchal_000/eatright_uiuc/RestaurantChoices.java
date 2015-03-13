@@ -33,11 +33,13 @@ public class RestaurantChoices extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ScrollView sv = new ScrollView(this);
-        sv.setBackgroundColor(Color.parseColor("#218C8D"));
+        //sv.setBackgroundColor(Color.parseColor("#218C8D"));
+        sv.setBackgroundColor(Color.parseColor("#BED661"));
         LinearLayout ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.VERTICAL);
         sv.addView(ll);
         ArrayList<Button> buttons = new ArrayList<Button>();
+        String[] otherPallette = {"#78D5E3", "#7AF5F5", "#34DDDD", "#93E2D5"};
         String[] array = {"#6CCECB", "#F9E559", "#EF7126" ,"#8EDC9D"};
         //double[] location = getLocation();
         rests = apiInterface.getRestaurants(40.11000, -88.22700);
@@ -49,7 +51,7 @@ public class RestaurantChoices extends ActionBarActivity {
                         LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 params.setMargins(20, 10, 20, 10);
                 button.setLayoutParams(params);
-                button.setBackgroundColor(Color.parseColor(array[i%array.length]));
+                button.setBackgroundColor(Color.parseColor(otherPallette[i%otherPallette.length]));
                 button.setText(rests.get(i).getName());
                 button.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
@@ -73,7 +75,7 @@ public class RestaurantChoices extends ActionBarActivity {
         Button refresh = new Button(this);
         refresh.setText("Locate Restaurants");
         refresh.setPadding(40, 40, 40, 40);
-        refresh.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        refresh.setBackgroundColor(Color.parseColor("#89E894"));
         ll.addView(refresh);
         refresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
