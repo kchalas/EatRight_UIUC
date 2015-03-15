@@ -1,7 +1,9 @@
 package com.example.kchal_000.eatright_uiuc;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
@@ -10,6 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ScrollView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -21,63 +27,56 @@ import information.RestaurantInfo;
 
 public class RestaurantChoices extends ActionBarActivity {
 
-    private static final int[] button_ids = {
-            R.id.button1, R.id.button2, R.id.button3, R.id.button4,
-            R.id.button5, R.id.button6, R.id.button7, R.id.button8,
-            R.id.button9, R.id.button10, R.id.button11, R.id.button12,
-            R.id.button13, R.id.button14, R.id.button15, R.id.button16,
-            R.id.button17, R.id.button18
-    };
-    private ArrayList<RestaurantInfo> rests = new ArrayList<RestaurantInfo>();
+    private ArrayList<RestaurantInfo> rests;
 
-    /**private static final String[] rests = {
-            "McDonalds", "Subway", "Taco Bell", "Chipotle",
-            "Jay Gumbos", "Dunkin Donuts", "Starbucks", "Pizza Hut",
-    };*/
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurant__choices);
-        Intent intent = getIntent();
-        String fName = intent.getStringExtra("name");
+        ScrollView sv = new ScrollView(this);
+        //sv.setBackgroundColor(Color.parseColor("#218C8D"));
+        sv.setBackgroundColor(Color.parseColor("#BED661"));
+        LinearLayout ll = new LinearLayout(this);
+        ll.setOrientation(LinearLayout.VERTICAL);
+        sv.addView(ll);
+        ArrayList<Button> buttons = new ArrayList<Button>();
+        String[] otherPallette = {"#78D5E3", "#7AF5F5", "#34DDDD", "#93E2D5"};
+        String[] array = {"#6CCECB", "#F9E559", "#EF7126" ,"#8EDC9D"};
         //double[] location = getLocation();
-        /**
-        try {
-            rests = apiInterface.getRestaurants(location[0], location[1]);
-            if (rests == null) {
-                rests = apiInterface.getRestaurants(40.11000, -88.22700);
+        rests = apiInterface.getRestaurants(40.11000, -88.22700);
+        if(rests.size() > 0) {
+            //create layout
+            for(int i = 0; i <rests.size(); i++){
+                final Button button = new Button(this);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(20, 10, 20, 10);
+                button.setLayoutParams(params);
+                button.setBackgroundColor(Color.parseColor(otherPallette[i%otherPallette.length]));
+                button.setText(rests.get(i).getName());
+                button.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        Intent myIntent = new Intent(view.getContext(), MenuOfRestaurant.class);
+                        myIntent.putExtra("name", button.getText());
+                        startActivityForResult(myIntent, 0);
+                    }
+
+                });
+                buttons.add(button);
+                ll.addView(button);
             }
-        }catch(JSONException e){
-            //error message
+        }else{
+            //inform user that no restaurants are available.
+            Context context = getApplicationContext();
+            CharSequence txt = "No Restaurants Nearby!";
+            Toast tst = Toast.makeText(context, txt, Toast.LENGTH_LONG);
+            tst.show();
         }
-         **/
-        Button[] buttons = {
-                (Button) findViewById(button_ids[0]), (Button) findViewById(button_ids[1]),
-                (Button) findViewById(button_ids[2]), (Button) findViewById(button_ids[3]),
-                (Button) findViewById(button_ids[4]), (Button) findViewById(button_ids[5]),
-                (Button) findViewById(button_ids[6]), (Button) findViewById(button_ids[7]),
-                (Button) findViewById(button_ids[8]), (Button) findViewById(button_ids[9]),
-                (Button) findViewById(button_ids[10]), (Button) findViewById(button_ids[11]),
-                (Button) findViewById(button_ids[12]), (Button) findViewById(button_ids[13]),
-                (Button) findViewById(button_ids[14]), (Button) findViewById(button_ids[15]),
-                (Button) findViewById(button_ids[16]), (Button) findViewById(button_ids[17]),
-        };
 
-
-        for(int i = 0; i < rests.size(); i++) {
-            buttons[i].setText(rests.get(i).getName());
-            buttons[i].setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    Intent myIntent = new Intent(view.getContext(), MenuOfRestaurant.class);
-
-                    startActivityForResult(myIntent, 0);
-                }
-
-            });
-
-        }
-        Button refresh = (Button) findViewById(R.id.buttonRefresh);
+        Button refresh = new Button(this);
+        refresh.setText("Locate Restaurants");
+        refresh.setPadding(40, 40, 40, 40);
+        refresh.setBackgroundColor(Color.parseColor("#89E894"));
+        ll.addView(refresh);
         refresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), RestaurantChoices.class);
@@ -85,6 +84,7 @@ public class RestaurantChoices extends ActionBarActivity {
             }
 
         });
+        this.setContentView(sv);
 
     }
 
