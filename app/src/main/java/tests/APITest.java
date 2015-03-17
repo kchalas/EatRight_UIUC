@@ -9,6 +9,7 @@ import api.WolframAPI;
 import api.YelpAPI;
 import api.apiInterface;
 import information.MenuItem;
+import information.NutritionInfo;
 import information.RestaurantInfo;
 
 public class APITest extends InstrumentationTestCase{
@@ -20,11 +21,13 @@ public class APITest extends InstrumentationTestCase{
 
     public void testWolframAPI() throws Exception{
         MenuItem item = new MenuItem();
-        item.setName("Big Mac");
+        item.setName("chicken nugget");
         item.setRestaurantName("Mcdonalds");
 
-        String xmlData = apiInterface.getNutritionInfo(item);
+        NutritionInfo info = apiInterface.getNutritionInfo(item);
 
-        assertTrue(xmlData.contains("success='true'"));
+        assertTrue(info.getCalories() == 46.0);
+        assertTrue(info.getFiber() == 0.127);
+        assertTrue(info.getProtein() == 2.0);
     }
 }

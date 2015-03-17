@@ -32,7 +32,7 @@ public class apiInterface {
         return Parse.parseMenu(jsonData);
     }
 
-    public static String getNutritionInfo(MenuItem item) throws IOException{
+    public static NutritionInfo getNutritionInfo(MenuItem item) throws IOException{
 
         WolframAPI apiTask = new WolframAPI();
 
@@ -45,7 +45,9 @@ public class apiInterface {
             Log.e("error", e.toString());
         }
 
-        return xmlData;
-        //return Parse.parseNutritionInfo(xmlData);
+        NutritionInfo info = Parse.parseNutritionInfo(xmlData);
+        info.setName(item.getName());
+
+        return info;
     }
 }
