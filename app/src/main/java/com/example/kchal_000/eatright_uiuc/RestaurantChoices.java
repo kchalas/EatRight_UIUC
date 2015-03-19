@@ -43,7 +43,7 @@ public class RestaurantChoices extends ActionBarActivity {
         String[] array = {"#6CCECB", "#F9E559", "#EF7126" ,"#8EDC9D"};
         //double[] location = getLocation();
         rests = apiInterface.getRestaurants(40.11000, -88.22700);
-        if(rests.size() > 0) {
+        if(rests != null && rests.size() > 0) {
             //create layout
             for(int i = 0; i <rests.size(); i++){
                 final Button button = new Button(this);
@@ -111,13 +111,13 @@ public class RestaurantChoices extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Location code from
+     * http://stackoverflow.com
+     * /questions/2227292/how-to-get-latitude-and-longitude-
+     * of-the-mobiledevice-in-android
+     */
     public double[] getLocation() {
-        /**
-         * Location code from
-         * http://stackoverflow.com
-         * /questions/2227292/how-to-get-latitude-and-longitude-
-         * of-the-mobiledevice-in-android
-         */
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         double longitude = location.getLongitude();
