@@ -14,15 +14,17 @@ public class DataProvider {
     public static HashMap<String, HashMap<String, List<String>>> getData(){
         HashMap<String, HashMap<String, List<String>>> categories =
                 new HashMap<String, HashMap<String, List<String>>>();
-        String[] categs = {"Over 500 cal", "250 to 500 cal", "250 or less cal"};
+        String[] categs = {"Over 750 cal", "500 to 750 cal", "250 to 500 cal", "250 or less cal"};
         String[] entrees = {"Big Mac", "Chicken Nuggets", "Fish Fillet"};
         String[] sides = {"coleslaw", "salad", "potatoes", "fries"};
         String[] dessert = {"ice cream", "scones", "cookies", "pie"};
+
         List<String> details = new ArrayList<String>();
         details.add("Calories: 300");
         details.add("Protein: 5g");
         details.add("Dietary Fiber: 3g");
         details.add("Fat: 3g");
+
         List<String> detai = new ArrayList<String>();
         detai.add("Bull");
         detai.add("Crack");
@@ -47,9 +49,12 @@ public class DataProvider {
             }
             i++;
         }
+        HashMap<String, List<String>> vs = new HashMap<>();
+        vs.put("pepsi", details);
         categories.put(categs[0], entrs);
         categories.put(categs[1], sds);
         categories.put(categs[2], ds);
+        categories.put(categs[3], vs);
         return categories;
 
     }

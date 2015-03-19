@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import api.apiInterface;
+import information.RestaurantInfo;
+
 /*
    Helped along with details from :
    http://androidcodesnips.blogspot.com/2011/09/three-level-expandable-list.html
@@ -28,6 +32,11 @@ public class MenuOfRestaurant extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent restIntent = getIntent();
+        RestaurantInfo rInfo = (RestaurantInfo)restIntent.getSerializableExtra("rest");
+        //need to use RestaurantInfo to create a data struct to give to contentView
+        Log.i("json to parse ", apiInterface.getMenu(rInfo));
+        //set up content view
         setContentView(R.layout.activity_menu_of_restaurant);
         expt = (ExpandableListView) findViewById(R.id.expandableListView);
         expt.setAdapter(new FirstLevelAdapter(this));

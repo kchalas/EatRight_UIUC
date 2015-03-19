@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import api.apiInterface;
 import information.RestaurantInfo;
@@ -27,7 +29,7 @@ import information.RestaurantInfo;
 
 public class RestaurantChoices extends ActionBarActivity {
 
-    private ArrayList<RestaurantInfo> rests;
+    private HashMap<String, RestaurantInfo> rests = new HashMap<String, RestaurantInfo>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,15 @@ public class RestaurantChoices extends ActionBarActivity {
         String[] otherPallette = {"#78D5E3", "#7AF5F5", "#34DDDD", "#93E2D5"};
         String[] array = {"#6CCECB", "#F9E559", "#EF7126" ,"#8EDC9D"};
         //double[] location = getLocation();
-        rests = apiInterface.getRestaurants(40.11000, -88.22700);
+        ArrayList<RestaurantInfo> temp = apiInterface.getRestaurants(40.11000, -88.22700);
+        Log.i("temp element", temp.get(0).toString());
+
+        if(!temp.isEmpty()) {
+            for (RestaurantInfo e : temp) {
+                    rests.put(e.getName(), e);
+            }
+        }
+
         if(rests != null && rests.size() > 0) {
             //create layout
             for(int i = 0; i <rests.size(); i++){
@@ -52,11 +62,12 @@ public class RestaurantChoices extends ActionBarActivity {
                 params.setMargins(20, 10, 20, 10);
                 button.setLayoutParams(params);
                 button.setBackgroundColor(Color.parseColor(otherPallette[i%otherPallette.length]));
-                button.setText(rests.get(i).getName());
+                button.setText(temp.get(i).getName());
                 button.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
                         Intent myIntent = new Intent(view.getContext(), MenuOfRestaurant.class);
                         myIntent.putExtra("name", button.getText());
+                        myIntent.putExtra("rest", rests.get(button.getText()));
                         //myIntent.putExtra("nme", new RestaurantInfo());
                         startActivityForResult(myIntent, 0);
                     }
