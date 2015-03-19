@@ -25,7 +25,7 @@ import information.*;
 
 
 public class Parse {
-    public static ArrayList<RestaurantInfo> parseRestaurants(String jsonData){
+    public static ArrayList<RestaurantInfo> parseRestaurants(String jsonData, double lat, double lon){
         try {
             ArrayList<RestaurantInfo> restList = new ArrayList<RestaurantInfo>();
             JSONObject obj = new JSONObject(jsonData);
@@ -41,6 +41,10 @@ public class Parse {
 
                 entry.setAddress(loc.getJSONArray("display_address").toString());
                 entry.setName(name);
+
+                entry.setLat(lat);
+                entry.setLon(lon);
+
                 restList.add(entry);
             }
             return restList;

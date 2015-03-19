@@ -6,6 +6,17 @@ public class NutritionInfo {
     private double fiber;
     private double protein;
 
+    public NutritionInfo(){}
+
+    public NutritionInfo(String string){
+        String[] strings = string.split("`");
+
+        name = strings[0];
+        calories = Double.parseDouble(strings[1]);
+        fiber = Double.parseDouble(strings[2]);
+        protein = Double.parseDouble(strings[3]);
+    }
+
     public String getName() {
         return name;
     }
@@ -36,5 +47,9 @@ public class NutritionInfo {
 
     public void setProtein(double protein) {
         this.protein = protein;
+    }
+
+    public String toString(){
+        return name + "`" + calories + "`" + fiber + "`" + protein;
     }
 }

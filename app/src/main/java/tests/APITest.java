@@ -19,6 +19,17 @@ public class APITest extends InstrumentationTestCase{
         assertTrue(restaurantList.size() > 0);
     }
 
+    public void testLocuAPI() throws Exception {
+        RestaurantInfo restaurant = new RestaurantInfo();
+        restaurant.setName("burger king");
+        restaurant.setLat(40.11);
+        restaurant.setLon(-88.227);
+
+        String jsonData = apiInterface.getMenu(restaurant);
+
+        assertTrue(jsonData.contains("success"));
+    }
+
     public void testWolframAPI() throws Exception{
         MenuItem item = new MenuItem();
         item.setName("chicken nugget");
