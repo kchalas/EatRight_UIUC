@@ -1,8 +1,19 @@
 package information;
 
-public class MenuItem {
+import java.io.Serializable;
+
+public class MenuItem implements Serializable {
     private String name;
     private String restaurantName;
+
+    public MenuItem(){}
+
+    public MenuItem(String string){
+        String[] strings = string.split("`");
+
+        name = strings[0];
+        restaurantName = strings[1];
+    }
 
     public String getName() {
         return name;
@@ -18,5 +29,9 @@ public class MenuItem {
 
     public void setRestaurantName(String restaurantName) {
         this.restaurantName = restaurantName;
+    }
+
+    public String toString(){
+        return name + "`" + restaurantName;
     }
 }

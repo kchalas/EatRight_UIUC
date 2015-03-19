@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /*
    Helped along with details from :
@@ -27,7 +30,7 @@ public class MenuOfRestaurant extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_of_restaurant);
         expt = (ExpandableListView) findViewById(R.id.expandableListView);
-        expt.setAdapter(new FirstLevelAdapter());
+        expt.setAdapter(new FirstLevelAdapter(this));
 
 
         Button back = (Button) findViewById(R.id.buttonBack);
@@ -62,35 +65,38 @@ public class MenuOfRestaurant extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+/**
     public class FirstLevelAdapter extends BaseExpandableListAdapter {
         private Context context;
-        private List<String> listGroup;
+        HashMap<String, HashMap<String, List<String>>> allData = DataProvider.getData();
+        private Object[] listGroup = allData.keySet().toArray();
         private HashMap<String, List<String>> listChild;
 
         @Override
         public int getGroupCount() {
-            return 0;
+            return listGroup.length;
         }
 
         @Override
         public int getChildrenCount(int groupPosition) {
-            return 0;
+            return allData.get(listGroup[groupPosition]).size();
         }
 
         @Override
         public Object getGroup(int groupPosition) {
-            return null;
+            return listGroup[groupPosition];
         }
 
         @Override
         public Object getChild(int groupPosition, int childPosition) {
-            return childPosition;
+            HashMap<String, List<String>> chP = allData.get(listGroup[groupPosition]);
+            Object[] keys = chP.keySet().toArray();
+            return chP.get(keys[childPosition]);
         }
 
         @Override
         public long getGroupId(int groupPosition) {
-            return 0;
+            return groupPosition;
         }
 
         @Override
@@ -107,15 +113,25 @@ public class MenuOfRestaurant extends ActionBarActivity {
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
             //where the details of top level choices go...
 
-            return null;
+            //LayoutInflater inflat = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            //convertView = inflat.inflate(R.layout.meals_list, null);
+
+            TextView txtView = (TextView)findViewById(R.id.parentname);
+            String txt = listGroup[groupPosition].toString();
+            txtView.setText(txt);
+
+
+            return convertView;
         }
 
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            CustomExpandableListView nxtList = new CustomExpandableListView(MenuOfRestaurant.this);
-            nxtList.setAdapter(new SecondLevelAdapter());
-            nxtList.setGroupIndicator(null);
-            return nxtList;
+            TextView txtView = (TextView)findViewById(R.id.childname);
+            txtView.setText("TROUBLE");
+            //CustomExpandableListView nxtList = new CustomExpandableListView(MenuOfRestaurant.this);
+            //nxtList.setAdapter(new SecondLevelAdapter(groupPosition));
+            //nxtList.setGroupIndicator(null);
+            return txtView;
         }
 
         @Override
@@ -141,39 +157,51 @@ public class MenuOfRestaurant extends ActionBarActivity {
     }
 
     public class SecondLevelAdapter extends BaseExpandableListAdapter {
+        private Context context;
+        private int group;
+        HashMap<String, HashMap<String, List<String>>> allData = DataProvider.getData();
+        private Object[] listGroup = allData.keySet().toArray();
+        private HashMap<String, List<String>> list = allData.get(listGroup[this.group]) ;
+        private Object[] keysOfMap = list.keySet().toArray();
+
+        public SecondLevelAdapter(int group){
+            this.group = group;
+        }
+
         @Override
         public int getGroupCount() {
-            return 0;
+            return keysOfMap.length;
         }
 
         @Override
         public int getChildrenCount(int groupPosition) {
-            return 0;
+            return list.get(keysOfMap[groupPosition]).size();
         }
 
         @Override
         public Object getGroup(int groupPosition) {
-            return null;
+            return keysOfMap[groupPosition];
         }
 
         @Override
         public Object getChild(int groupPosition, int childPosition) {
-            return null;
+            List<String> child = list.get(keysOfMap[groupPosition]);
+            return child.get(childPosition);
         }
 
         @Override
         public long getGroupId(int groupPosition) {
-            return 0;
+            return groupPosition;
         }
 
         @Override
         public long getChildId(int groupPosition, int childPosition) {
-            return 0;
+            return childPosition;
         }
 
         @Override
         public boolean hasStableIds() {
-            return false;
+            return true;
         }
 
         @Override
@@ -192,7 +220,7 @@ public class MenuOfRestaurant extends ActionBarActivity {
         }
     }
 
-
+*/
 
 
 

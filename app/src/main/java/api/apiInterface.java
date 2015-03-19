@@ -23,16 +23,25 @@ public class apiInterface {
             Log.e("error", e.toString());
         }
 
-        return Parse.parseRestaurants(jsonData);
+        return Parse.parseRestaurants(jsonData, lat, lon);
     }
 
-    public static ArrayList<MenuItem> getMenu(String restaurantName){
-        String jsonData = LocuAPI.getMenu(restaurantName);
+    public static String getMenu(RestaurantInfo restaurant){
+        LocuAPI apiTask = new LocuAPI();
 
-        return Parse.parseMenu(jsonData);
+        String jsonData = "";
+        try {
+            jsonData = apiTask.execute(restaurant).get();
+        }catch(InterruptedException e){
+            Log.e("error", e.toString());
+        }catch(ExecutionException e){
+            Log.e("error", e.toString());
+        }
+
+        return jsonData;
     }
 
-    public static String getNutritionInfo(MenuItem item) throws IOException{
+    public static NutritionInfo getNutritionInfo(MenuItem item) throws IOException{
 
         WolframAPI apiTask = new WolframAPI();
 
@@ -45,7 +54,9 @@ public class apiInterface {
             Log.e("error", e.toString());
         }
 
-        return xmlData;
-        //return Parse.parseNutritionInfo(xmlData);
+        NutritionInfo info = Parse.parseNutritionInfo(xmlData);
+        info.setName(item.getName());
+
+        return info;
     }
 }

@@ -1,10 +1,23 @@
 package information;
 
-public class NutritionInfo {
+import java.io.Serializable;
+
+public class NutritionInfo implements Serializable{
     private String name;
-    private long calories;
-    private long fiber;
-    private long protein;
+    private double calories;
+    private double fiber;
+    private double protein;
+
+    public NutritionInfo(){}
+
+    public NutritionInfo(String string){
+        String[] strings = string.split("`");
+
+        name = strings[0];
+        calories = Double.parseDouble(strings[1]);
+        fiber = Double.parseDouble(strings[2]);
+        protein = Double.parseDouble(strings[3]);
+    }
 
     public String getName() {
         return name;
@@ -14,27 +27,31 @@ public class NutritionInfo {
         this.name = name;
     }
 
-    public long getCalories() {
+    public double getCalories() {
         return calories;
     }
 
-    public void setCalories(long calories) {
+    public void setCalories(double calories) {
         this.calories = calories;
     }
 
-    public long getFiber() {
+    public double getFiber() {
         return fiber;
     }
 
-    public void setFiber(long fiber) {
+    public void setFiber(double fiber) {
         this.fiber = fiber;
     }
 
-    public long getProtein() {
+    public double getProtein() {
         return protein;
     }
 
-    public void setProtein(long protein) {
+    public void setProtein(double protein) {
         this.protein = protein;
+    }
+
+    public String toString(){
+        return name + "`" + calories + "`" + fiber + "`" + protein;
     }
 }
