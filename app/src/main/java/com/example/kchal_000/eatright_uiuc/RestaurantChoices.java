@@ -57,6 +57,7 @@ public class RestaurantChoices extends ActionBarActivity {
                     public void onClick(View view) {
                         Intent myIntent = new Intent(view.getContext(), MenuOfRestaurant.class);
                         myIntent.putExtra("name", button.getText());
+                        //myIntent.putExtra("nme", new RestaurantInfo());
                         startActivityForResult(myIntent, 0);
                     }
 

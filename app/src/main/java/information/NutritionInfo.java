@@ -1,6 +1,8 @@
 package information;
 
-public class NutritionInfo {
+import java.io.Serializable;
+
+public class NutritionInfo implements Serializable{
     private String name;
     private double calories;
     private double fiber;

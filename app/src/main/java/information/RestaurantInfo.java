@@ -1,6 +1,8 @@
 package information;
 
-public class RestaurantInfo {
+import java.io.Serializable;
+
+public class RestaurantInfo implements Serializable {
     private String name;
     private String address;
     private long distance;
