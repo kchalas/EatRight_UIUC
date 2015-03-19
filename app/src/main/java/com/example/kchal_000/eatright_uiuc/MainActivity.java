@@ -1,13 +1,16 @@
 package com.example.kchal_000.eatright_uiuc;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -21,7 +24,8 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         Meal[] pointList;
-        int pointNumber=2;
+        MealCombination mainCombination=new MealCombination();
+        int pointNumber=3;
         Point size=new Point();
         float unitx, unity;
         float maxProtein=0.3f;
@@ -36,16 +40,29 @@ public class MainActivity extends ActionBarActivity {
 
         //pointList[0]=new Meal(0,29,100);
         //pointList[1]=new Meal(27,0,100);
-        //pointList[2]=new Meal(0,0,100);
+        pointList[2]=new Meal(1,56,830,"Baconator");
         pointList[0]=new Meal(0,86,379,"Steak");
         pointList[1]=new Meal(16,7,160,"Celery(1kg)");
 
         for(int i=0; i<pointNumber;i++) {
-            addContentView(toImageButton(pointList[i],this, unitx, unity), new ViewGroup.LayoutParams(50, 50));
+            addContentView(toImageButton(pointList[i],this, unitx, unity,mainCombination), new ViewGroup.LayoutParams(50, 50));
         }
 
+        ImageButton comb=new ImageButton(this);
+        comb.setBackgroundResource(R.drawable.point);
+        comb.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), DetailActivity.class);
+
+                startActivity(intent);
+            }
+        });
+
+
+        mainCombination.setImageButton(comb,unitx, unity);
+        addContentView(mainCombination.getImageButton(), new ViewGroup.LayoutParams(75, 75));
         makeAxisLabels(this,maxFiber,maxProtein,size);
-        userInterface(this,size);
+        userInterface(this,size,mainCombination);
     }
 
     public void makeAxisLabels(Context context, float maxFiber, float maxProtein, Point size){
@@ -77,7 +94,7 @@ public class MainActivity extends ActionBarActivity {
         addContentView(ymax,new ViewGroup.LayoutParams(50,50));
     }
 
-    public void userInterface(Context context, Point size){
+    public void userInterface(Context context, Point size,final MealCombination mealCombination){
         ImageButton add, combine;
 
         add=new ImageButton(this);
@@ -95,6 +112,16 @@ public class MainActivity extends ActionBarActivity {
         combine.setBackgroundResource(R.drawable.square);
         combine.setTranslationX(size.x-310);
         combine.setTranslationY(size.y - 400);
+        combine.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(mealCombination.getCombine()){
+                    mealCombination.unsetCombine();
+                }else{
+                    mealCombination.setCombine();
+                }
+            }
+        });
+
 
 
         addContentView(add,new ViewGroup.LayoutParams(150,150));
@@ -103,7 +130,7 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    public ImageButton toImageButton(final Meal meal, Context context,float ux, float uy){
+    public ImageButton toImageButton(final Meal meal, Context context,float ux, float uy,final MealCombination mealCombination){
         ImageButton ib=new ImageButton(context);
 
         ib.setBackgroundResource(R.drawable.point);
@@ -111,10 +138,14 @@ public class MainActivity extends ActionBarActivity {
         ib.setTranslationY((meal.getFiber() / meal.getCalories()) * ux);
         ib.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if(!mealCombination.getCombine()){
                 Intent intent = new Intent(v.getContext(), DetailActivity.class);
                 intent.putExtra("Meal.ID",meal.getId());
 
-                startActivity(intent);
+                startActivity(intent);}
+                else{
+                    mealCombination.addMeal(meal);
+                }
             }
         });
 
