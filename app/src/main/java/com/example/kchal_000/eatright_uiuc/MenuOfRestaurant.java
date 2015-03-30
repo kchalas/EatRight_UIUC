@@ -40,7 +40,8 @@ public class MenuOfRestaurant extends ActionBarActivity {
         setContentView(R.layout.activity_menu_of_restaurant);
         expt = (ExpandableListView) findViewById(R.id.expandableListView);
         expt.setAdapter(new FirstLevelAdapter(this));
-
+        //expt.setGroupIndicator(getResources().getDrawable(R.drawable.arrow_right_icon));
+        //expt.setIndicatorBounds(5,5);
 
         Button back = (Button) findViewById(R.id.buttonBack);
         back.setOnClickListener(new View.OnClickListener() {

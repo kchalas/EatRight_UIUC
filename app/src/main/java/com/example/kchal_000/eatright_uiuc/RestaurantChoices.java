@@ -45,36 +45,45 @@ public class RestaurantChoices extends ActionBarActivity {
         String[] array = {"#6CCECB", "#F9E559", "#EF7126" ,"#8EDC9D"};
         //double[] location = getLocation();
         ArrayList<RestaurantInfo> temp = apiInterface.getRestaurants(40.11000, -88.22700);
-        Log.i("temp element", temp.get(0).toString());
 
-        if(!temp.isEmpty()) {
-            for (RestaurantInfo e : temp) {
+        if(temp!=null ) {
+            if(!temp.isEmpty()) {
+                //Log.i("temp element", temp.get(0).toString());
+                for (RestaurantInfo e : temp) {
                     rests.put(e.getName(), e);
+                }
             }
         }
 
-        if(rests != null && rests.size() > 0) {
-            //create layout
-            for(int i = 0; i <rests.size(); i++){
-                final Button button = new Button(this);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.setMargins(20, 10, 20, 10);
-                button.setLayoutParams(params);
-                button.setBackgroundColor(Color.parseColor(otherPallette[i%otherPallette.length]));
-                button.setText(temp.get(i).getName());
-                button.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        Intent myIntent = new Intent(view.getContext(), MenuOfRestaurant.class);
-                        myIntent.putExtra("name", button.getText());
-                        myIntent.putExtra("rest", rests.get(button.getText()));
-                        //myIntent.putExtra("nme", new RestaurantInfo());
-                        startActivityForResult(myIntent, 0);
-                    }
+        if(rests != null) {
+            if(!rests.isEmpty()) {
+                //create layout
+                for (int i = 0; i < rests.size(); i++) {
+                    final Button button = new Button(this);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(20, 10, 20, 10);
+                    button.setLayoutParams(params);
+                    button.setBackgroundColor(Color.parseColor(otherPallette[i % otherPallette.length]));
+                    button.setText(temp.get(i).getName());
+                    button.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View view) {
+                            Intent myIntent = new Intent(view.getContext(), MenuOfRestaurant.class);
+                            myIntent.putExtra("name", button.getText());
+                            myIntent.putExtra("rest", rests.get(button.getText()));
+                            //myIntent.putExtra("nme", new RestaurantInfo());
+                            startActivityForResult(myIntent, 0);
+                        }
 
-                });
-                buttons.add(button);
-                ll.addView(button);
+                    });
+                    buttons.add(button);
+                    ll.addView(button);
+                }
+            }else{
+                Context context = getApplicationContext();
+                CharSequence txt = "No Restaurants Nearby!";
+                Toast tst = Toast.makeText(context, txt, Toast.LENGTH_LONG);
+                tst.show();
             }
         }else{
             //inform user that no restaurants are available.

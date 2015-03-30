@@ -2,9 +2,11 @@ package com.example.kchal_000.eatright_uiuc;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -68,13 +70,26 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        String str = this.meal;
-        TextView tv = new TextView(this.context);
-        tv.setPadding(50, 0, 0, 0);
-        //Log.i("setting txt", str);
+        GroupViewHolder holder;
+        if(convertView == null){
+            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.second_level_meals_list,null);
+            //holder = new GroupViewHolder();
+            //holder.tv = (TextView) convertView.findViewById(R.id.parentname);
+            //holder.check = (CheckBox) convertView.findViewById(R.id.checkbox);
+            //convertView.setTag(holder);
+        }//else{holder = (GroupViewHolder) convertView.getTag();}
 
-        tv.setText(str);
-        return tv;
+
+        String str = this.meal;
+        //holder.tv.setText(str);
+        TextView tvTitle = (TextView)convertView.findViewById(R.id.mealname);
+        //TextView tv = new TextView(this.context);
+        //tv.setPadding(70, 0, 0, 0);
+        //Log.i("setting txt", str);
+        tvTitle.setText(str);
+       // tv.setText(str);
+        return convertView;
     }
 
     @Override
@@ -82,12 +97,17 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
         String str = (String)getChild(groupPosition, childPosition);
         TextView tv = new TextView(this.context);
         tv.setText(str);
-        tv.setPadding(100, 0, 0, 0);
+        tv.setPadding(130, 0, 0, 0);
         return tv;
     }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
+    }
+
+    class GroupViewHolder{
+        TextView tv;
+        CheckBox check;
     }
 }

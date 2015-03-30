@@ -2,9 +2,11 @@ package com.example.kchal_000.eatright_uiuc;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -16,10 +18,12 @@ import java.util.List;
  */
 public class FirstLevelAdapter extends BaseExpandableListAdapter{
     Context context;
+
     HashMap<String, HashMap<String, List<String>>> allData = DataProvider.getData();
     private Object[] listGroup = allData.keySet().toArray();
     public FirstLevelAdapter(Context context){
         this.context = context;
+
     }
     @Override
     public int getGroupCount() {
@@ -61,9 +65,19 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String str = (String)getGroup(groupPosition);
-        TextView tv = new TextView(context);
+        GroupViewHolder holder;
+        if(convertView == null){
+            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.meals_list,null); //resource, viewgroup
+            //holder = new GroupViewHolder();
+            //holder.tv = (TextView) convertView.findViewById(R.id.mealname);
+            //holder.check = (CheckBox) convertView.findViewById(R.id.checkboxchild);
+            //convertView.setTag(holder);
+        } //else{ holder = (GroupViewHolder) convertView.getTag();}
+        //holder.tv.setText(str);
+        TextView tv = (TextView) convertView.findViewById(R.id.parentname);
         tv.setText(str);
-        return tv;
+        return convertView;
     }
 
     @Override
@@ -84,7 +98,7 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
         Log.i("hash size", chP.size()+"");
         nxtList.setAdapter(new SecondLevelAdapter(this.context,  childPosition, chP));
         convertView = nxtList;
-        convertView.setPadding(20, 0, 0, 0);
+        //convertView.setPadding(20, 0, 0, 0);
         return convertView;
         //return tv;
     }
@@ -92,5 +106,10 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    class GroupViewHolder{
+        TextView tv;
+        CheckBox check;
     }
 }
