@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
+import android.media.Image;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Display;
@@ -44,6 +45,8 @@ public class MainActivity extends ActionBarActivity {
         pointList[0]=new Meal(0,86,379,"Steak");
         pointList[1]=new Meal(16,7,160,"Celery(1kg)");
 
+        makeAxisLabels(this,maxFiber,maxProtein,size);
+
         for(int i=0; i<pointNumber;i++) {
             addContentView(toImageButton(pointList[i],this, unitx, unity,mainCombination), new ViewGroup.LayoutParams(50, 50));
         }
@@ -61,12 +64,12 @@ public class MainActivity extends ActionBarActivity {
 
         mainCombination.setImageButton(comb,unitx, unity);
         addContentView(mainCombination.getImageButton(), new ViewGroup.LayoutParams(75, 75));
-        makeAxisLabels(this,maxFiber,maxProtein,size);
         userInterface(this,size,mainCombination);
     }
 
     public void makeAxisLabels(Context context, float maxFiber, float maxProtein, Point size){
         EditText xmax, ymax, origin;
+        View redZone,yellowZone,greenZone;
 
         origin=new EditText(this);
         origin.setText("0");
@@ -89,7 +92,29 @@ public class MainActivity extends ActionBarActivity {
         ymax.setTranslationX(0);
         ymax.setTranslationY(size.y - 300);
 
-        addContentView(origin,new ViewGroup.LayoutParams(50,50));
+        redZone=new View(this);
+        redZone.setBackgroundResource(R.drawable.red);
+        redZone.setPadding(0,0,0,0);
+        redZone.setTranslationX(0);
+        redZone.setTranslationY(0);
+
+        yellowZone=new View(this);
+        yellowZone.setBackgroundResource(R.drawable.yellow);
+        yellowZone.setPadding(0,0,0,0);
+        yellowZone.setTranslationX(0);
+        yellowZone.setTranslationY(0);
+
+        greenZone=new View(this);
+        greenZone.setBackgroundResource(R.drawable.green);
+        greenZone.setPadding(0,0,0,0);
+        greenZone.setTranslationX(0);
+        greenZone.setTranslationY(0);
+
+        addContentView(greenZone,new ViewGroup.LayoutParams((size.x),(size.y)));
+        addContentView(yellowZone,new ViewGroup.LayoutParams((size.x)/2,(size.y-300)/2));
+        addContentView(redZone,new ViewGroup.LayoutParams((size.x)/4,(size.y-300)/4));
+
+        addContentView(origin, new ViewGroup.LayoutParams(50, 50));
         addContentView(xmax,new ViewGroup.LayoutParams(50,50));
         addContentView(ymax,new ViewGroup.LayoutParams(50,50));
     }
