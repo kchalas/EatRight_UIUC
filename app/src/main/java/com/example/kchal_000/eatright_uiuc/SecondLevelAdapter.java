@@ -21,6 +21,7 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
     Context context;
     int chosen;
     String meal;
+    MenuItem mealitem;
     List<String> details;
 
 
@@ -33,7 +34,8 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
         for(int i = 0; i < meals.length; i++){
             ms[i] = (MenuItem) meals[i];
         }
-        this.meal = ms[chosen].getName();
+        this.mealitem = ms[chosen];
+        this.meal = this.mealitem.getName();
         this.details = matchMealToDets.get(ms[chosen]);
 
     }
@@ -86,6 +88,7 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.second_level_meals_list,null);
+
             //holder = new GroupViewHolder();
             //holder.tv = (TextView) convertView.findViewById(R.id.parentname);
             //holder.check = (CheckBox) convertView.findViewById(R.id.checkbox);
@@ -97,8 +100,10 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
         //holder.tv.setText(str);
         TextView tvTitle = (TextView)convertView.findViewById(R.id.mealname);
         tvTitle.setText(str);
-        //CheckBox box = (CheckBox)convertView.findViewById(R.id.checkboxchild);
-
+        CheckBox box = (CheckBox)convertView.findViewById(R.id.checkboxchild);
+        box.setOnCheckedChangeListener((MenuOfRestaurant)this.context);
+        box.setChecked(this.mealitem.isSelected());
+        //if(box.hasOnClickListeners())
         //TextView tv = new TextView(this.context);
         //tv.setPadding(70, 0, 0, 0);
         //Log.i("setting txt", str);

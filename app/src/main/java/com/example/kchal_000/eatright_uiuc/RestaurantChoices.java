@@ -95,6 +95,10 @@ public class RestaurantChoices extends ActionBarActivity {
 
         Button refresh = new Button(this);
         refresh.setText("Locate Restaurants");
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(10, 10, 10, 10);
+        refresh.setLayoutParams(params);
         refresh.setPadding(40, 40, 40, 40);
         refresh.setBackgroundColor(Color.parseColor("#89E894"));
         ll.addView(refresh);

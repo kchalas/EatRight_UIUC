@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import information.CalorieCategory;
 import information.MenuItem;
 
 /**
@@ -13,14 +14,21 @@ public class DataProvider {
     public DataProvider(){
         //empty constructor
     }
-    public static HashMap<String, HashMap<MenuItem, List<String>>> getData(){
-        HashMap<String, HashMap<MenuItem, List<String>>> categories =
-                new HashMap<String, HashMap<MenuItem, List<String>>>();
-        String[] categs = {"Over 750 cal", "500 to 750 cal", "250 to 500 cal", "250 or less cal"};
+    public static HashMap<CalorieCategory, HashMap<MenuItem, List<String>>> getData(){
+        HashMap<CalorieCategory, HashMap<MenuItem, List<String>>> categories =
+                new HashMap<CalorieCategory, HashMap<MenuItem, List<String>>>();
+        CalorieCategory[] categs = {
+                new CalorieCategory("Very High Cal - 750 or more ", 50000, 750),
+                new CalorieCategory("High Cal - 500 to 749", 749, 500),
+                new CalorieCategory("Medium Cal - 250 to 499", 499, 250),
+                new CalorieCategory("Low Cal - 249 or less", 249, 0)};
+
         MenuItem[] entrees = {new MenuItem("Big Mac`McDonalds"),
                 new MenuItem("Chicken Nuggets`McDonalds"), new MenuItem("Fish Fillet`McDonalds")};
+
         MenuItem[] sides = {new MenuItem("coleslaw`McDonalds"), new MenuItem("salad`McDonalds"),
                 new MenuItem("potatoes`McDonalds"), new MenuItem("fries`McDonalds")};
+
         MenuItem[] dessert = {new MenuItem("ice cream`McDonalds"), new MenuItem("scones`McDonalds"),
                 new MenuItem("cookies`McDonalds"), new MenuItem("pie`McDonalds")};
 

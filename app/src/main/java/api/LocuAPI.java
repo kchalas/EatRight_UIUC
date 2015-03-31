@@ -78,7 +78,9 @@ public class LocuAPI extends AsyncTask<RestaurantInfo, Void, String> {
             json.put("fields", jsonArr);
 
             JSONObject queryObject = new JSONObject();
-            queryObject.put("name", restaurant.getName());
+            if(restaurant != null) {
+                queryObject.put("name", restaurant.getName());
+            }
             jsonArr = new JSONArray();
             jsonArr.put(restaurant.getLat());
             jsonArr.put(restaurant.getLon());

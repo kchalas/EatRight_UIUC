@@ -13,6 +13,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.List;
 
+import information.CalorieCategory;
 import information.MenuItem;
 
 /**
@@ -21,7 +22,7 @@ import information.MenuItem;
 public class FirstLevelAdapter extends BaseExpandableListAdapter{
     Context context;
 
-    HashMap<String, HashMap<MenuItem, List<String>>> allData = DataProvider.getData();
+    HashMap<CalorieCategory, HashMap<MenuItem, List<String>>> allData = DataProvider.getData();
     private Object[] listGroup = allData.keySet().toArray(); //a set of calorie categories
     public FirstLevelAdapter(Context context){
         this.context = context;
@@ -66,11 +67,15 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        String str = (String)getGroup(groupPosition);
+        CalorieCategory categ = (CalorieCategory)getGroup(groupPosition);
+        String str = categ.getName();
+        CheckBox boxP;
         //GroupViewHolder holder;
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.meals_list,null); //resource, viewgroup
+            boxP = (CheckBox)convertView.findViewById(R.id.checkbox);
+            boxP.setOnCheckedChangeListener((MenuOfRestaurant)this.context);
             //holder = new GroupViewHolder();
             //holder.tv = (TextView) convertView.findViewById(R.id.mealname);
             //holder.check = (CheckBox) convertView.findViewById(R.id.checkboxchild);
@@ -79,6 +84,9 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
         //holder.tv.setText(str);
         TextView tv = (TextView) convertView.findViewById(R.id.parentname);
         tv.setText(str);
+        boxP = (CheckBox)convertView.findViewById(R.id.checkbox);
+        //boxP.setOnCheckedChangeListener((MenuOfRestaurant)this.context);
+        boxP.setChecked(categ.isSelected());
         return convertView;
     }
 
