@@ -41,7 +41,7 @@ public class apiInterface {
         return jsonData;
     }
 
-    public static NutritionInfo getNutritionInfo(MenuItem item) throws IOException{
+    public static NutritionInfo getNutritionInfo(MenuItem item){
 
         WolframAPI apiTask = new WolframAPI();
 

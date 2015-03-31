@@ -36,12 +36,8 @@ public class MenuDataProvider {
         menu.add(b);
 
         for(MenuItem m : menu){
-            try {
-                NutritionInfo nutritionForItem = apiInterface.getNutritionInfo(m);
-                nutritionOfItems.put(m, nutritionForItem);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            NutritionInfo nutritionForItem = apiInterface.getNutritionInfo(m);
+            nutritionOfItems.put(m, nutritionForItem);
         }
 
     }

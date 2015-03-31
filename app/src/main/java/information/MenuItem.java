@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class MenuItem implements Serializable {
     private String name;
     private String restaurantName;
+    private NutritionInfo nutritionInfo;
     private boolean selected = false;
 
     public MenuItem(){}
@@ -34,6 +35,14 @@ public class MenuItem implements Serializable {
 
     public String toString(){
         return name + "`" + restaurantName;
+    }
+
+    public void setNutritionInfo(NutritionInfo info){
+        nutritionInfo = info;
+    }
+
+    public NutritionInfo getNutritionInfo(){
+        return nutritionInfo;
     }
 
     public boolean isSelected(){return selected; }
