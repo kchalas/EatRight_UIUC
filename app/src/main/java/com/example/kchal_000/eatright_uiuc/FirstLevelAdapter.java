@@ -13,14 +13,16 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.List;
 
+import information.MenuItem;
+
 /**
  * Created by kchal_000 on 3/18/2015.
  */
 public class FirstLevelAdapter extends BaseExpandableListAdapter{
     Context context;
 
-    HashMap<String, HashMap<String, List<String>>> allData = DataProvider.getData();
-    private Object[] listGroup = allData.keySet().toArray();
+    HashMap<String, HashMap<MenuItem, List<String>>> allData = DataProvider.getData();
+    private Object[] listGroup = allData.keySet().toArray(); //a set of calorie categories
     public FirstLevelAdapter(Context context){
         this.context = context;
 
@@ -42,8 +44,8 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        HashMap<String, List<String>> chP = allData.get(listGroup[groupPosition]);
-        Object[] keys = chP.keySet().toArray();
+        HashMap<MenuItem, List<String>> chP = allData.get(listGroup[groupPosition]);
+        Object[] keys = chP.keySet().toArray(); //a set of MenuItems
         return keys[childPosition];
     }
 
@@ -65,7 +67,7 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String str = (String)getGroup(groupPosition);
-        GroupViewHolder holder;
+        //GroupViewHolder holder;
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.meals_list,null); //resource, viewgroup
@@ -91,11 +93,11 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
         **/
         CustExpListView nxtList = new CustExpListView(this.context);
         //need list to be the keySet, and to send along the hash
-        HashMap<String, List<String>> chP = allData.get(listGroup[groupPosition]);
+        HashMap<MenuItem, List<String>> chP = allData.get(listGroup[groupPosition]);
         Object[] keys = chP.keySet().toArray();
-        String keyStr= keys[childPosition].toString();
-        Log.i("keystr", keyStr);
-        Log.i("hash size", chP.size()+"");
+        //String keyStr= keys[childPosition].toString();
+        //Log.i("keystr", keyStr);
+        //Log.i("hash size", chP.size()+"");
         nxtList.setAdapter(new SecondLevelAdapter(this.context,  childPosition, chP));
         convertView = nxtList;
         //convertView.setPadding(20, 0, 0, 0);
@@ -106,10 +108,5 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
-    }
-
-    class GroupViewHolder{
-        TextView tv;
-        CheckBox check;
     }
 }
