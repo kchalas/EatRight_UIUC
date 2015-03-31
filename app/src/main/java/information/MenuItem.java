@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class MenuItem implements Serializable {
     private String name;
     private String restaurantName;
+    private NutritionInfo nutritionInfo;
 
     public MenuItem(){}
 
@@ -33,5 +34,13 @@ public class MenuItem implements Serializable {
 
     public String toString(){
         return name + "`" + restaurantName;
+    }
+
+    public void setNutritionInfo(NutritionInfo info){
+        nutritionInfo = info;
+    }
+
+    public NutritionInfo getNutritionInfo(){
+        return nutritionInfo;
     }
 }
