@@ -12,6 +12,8 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.List;
 
+import information.MenuItem;
+
 /**
  * Created by kchal_000 on 3/18/2015.
  */
@@ -22,12 +24,17 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
     List<String> details;
 
 
-    public SecondLevelAdapter(Context context, int chosen, HashMap<String, List<String>> matchMealToDets){
+    public SecondLevelAdapter(Context context, int chosen, HashMap<MenuItem, List<String>> matchMealToDets){
         this.context = context;
         this.chosen = chosen;
         Object[] meals =  matchMealToDets.keySet().toArray();
-        this.meal = meals[chosen].toString();
-        this.details = matchMealToDets.get(meal);
+        //MenuItem ml = meals[chosen].toString();
+        MenuItem[] ms = new MenuItem[meals.length];
+        for(int i = 0; i < meals.length; i++){
+            ms[i] = (MenuItem) meals[i];
+        }
+        this.meal = ms[chosen].getName();
+        this.details = matchMealToDets.get(ms[chosen]);
 
     }
     @Override
@@ -37,7 +44,12 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.details.size();
+        if(this.details != null){
+            return this.details.size();
+        }else{
+            return 0;
+        }
+
     }
 
     @Override
@@ -70,7 +82,7 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        GroupViewHolder holder;
+        //GroupViewHolder holder;
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.second_level_meals_list,null);
@@ -84,10 +96,13 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
         String str = this.meal;
         //holder.tv.setText(str);
         TextView tvTitle = (TextView)convertView.findViewById(R.id.mealname);
+        tvTitle.setText(str);
+        //CheckBox box = (CheckBox)convertView.findViewById(R.id.checkboxchild);
+
         //TextView tv = new TextView(this.context);
         //tv.setPadding(70, 0, 0, 0);
         //Log.i("setting txt", str);
-        tvTitle.setText(str);
+
        // tv.setText(str);
         return convertView;
     }
@@ -106,8 +121,5 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
         return false;
     }
 
-    class GroupViewHolder{
-        TextView tv;
-        CheckBox check;
-    }
+
 }

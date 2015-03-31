@@ -6,6 +6,7 @@ public class MenuItem implements Serializable {
     private String name;
     private String restaurantName;
     private NutritionInfo nutritionInfo;
+    private boolean selected = false;
 
     public MenuItem(){}
 
@@ -43,4 +44,8 @@ public class MenuItem implements Serializable {
     public NutritionInfo getNutritionInfo(){
         return nutritionInfo;
     }
+
+    public boolean isSelected(){return selected; }
+
+    public void setSelected(boolean selected){this.selected = selected;}
 }
