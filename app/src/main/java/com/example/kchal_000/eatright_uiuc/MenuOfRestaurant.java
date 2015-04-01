@@ -121,13 +121,35 @@ public class MenuOfRestaurant extends ActionBarActivity implements
         //int pos = expt.getPositionForView(buttonView);
         if(buttonView.getTag() instanceof CalorieCategory){
             CalorieCategory key = (CalorieCategory) buttonView.getTag();
-            CharSequence txt = "Nearby!";
+            key.setSelected(!key.isSelected()); //toggle
+            ArrayList<MenuItem> items = mp.getCategory(key.getName());
+            CharSequence txt = "Nearby!"+key.getName();
             Toast tst = Toast.makeText(ctxt, txt, Toast.LENGTH_LONG);
             tst.show();
+            if(key.isSelected()) {
+                for (MenuItem i : items) {
+                    i.setSelected(true);
+                }
+            }else{
+                for(MenuItem i : items){
+                    i.setSelected(false);
+                }
+            }
 
         }else if(buttonView.getTag() instanceof information.MenuItem){
             MenuItem key = (information.MenuItem) buttonView.getTag();
-            CharSequence txt = "No Restaurants Nearby!";
+            //HashMap<MenuItem, List<String>> categItems = allData.get(key);
+            key.setSelected(!key.isSelected()); //toggle
+            if(key.isSelected()){
+                if(!chosenItems.contains(key)){
+                    chosenItems.add(key);
+                }
+            }else{
+                if(chosenItems.contains(key)){
+                    chosenItems.remove(key);
+                }
+            }
+            CharSequence txt = "No y!"+key.getName();
             Toast tst = Toast.makeText(ctxt, txt, Toast.LENGTH_LONG);
             tst.show();
         }else{
