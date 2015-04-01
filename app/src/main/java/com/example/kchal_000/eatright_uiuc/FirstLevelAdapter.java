@@ -21,12 +21,14 @@ import information.MenuItem;
  */
 public class FirstLevelAdapter extends BaseExpandableListAdapter{
     Context context;
+    HashMap<CalorieCategory, HashMap<MenuItem, List<String>>> allData;
+    private Object[] listGroup;  //a set of calorie categories
 
-    HashMap<CalorieCategory, HashMap<MenuItem, List<String>>> allData = DataProvider.getData();
-    private Object[] listGroup = allData.keySet().toArray(); //a set of calorie categories
-    public FirstLevelAdapter(Context context){
+    public FirstLevelAdapter(Context context, HashMap<CalorieCategory, HashMap<MenuItem, List<String>>> data){
         this.context = context;
-
+        this.allData = data;
+        Log.i("hashmap", ""+allData.isEmpty());
+        listGroup = allData.keySet().toArray();
     }
     @Override
     public int getGroupCount() {
@@ -87,6 +89,7 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
         boxP = (CheckBox)convertView.findViewById(R.id.checkbox);
         //boxP.setOnCheckedChangeListener((MenuOfRestaurant)this.context);
         boxP.setChecked(categ.isSelected());
+        boxP.setTag(categ);
         return convertView;
     }
 

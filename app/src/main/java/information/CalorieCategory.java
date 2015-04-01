@@ -10,7 +10,7 @@ public class CalorieCategory {
     private int maxCal;
     private int minCal;
     private boolean isSelected;
-    private ArrayList<MenuItem> menu;
+    //private ArrayList<MenuItem> menu;
 
     public CalorieCategory(String name, int max, int min){
         this.name = name;
@@ -52,13 +52,15 @@ public class CalorieCategory {
     }
 
     public boolean inRange(int value){ return ((value >= this.minCal) &&( value <= this.maxCal));}
-
+    /**
     public void setMenu(ArrayList<MenuItem> menu){ this.menu = menu;}
+
 
     public void toggleMenu(){
         //a toggle
         for(MenuItem m : menu){
             m.setSelected(!m.isSelected());
         }
-    }
+    }**/
 }
+

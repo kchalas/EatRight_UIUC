@@ -18,6 +18,7 @@ public class MenuProvider {
         HashMap<String, List<String>> medium = new HashMap<String, List<String>>();
         HashMap<String, List<String>> big = new HashMap<String, List<String>>();
 
+        //List of details - List<String>
         for(MenuItem item : menuList){
             NutritionInfo itemInfo = apiInterface.getNutritionInfo(item);
 
@@ -26,6 +27,7 @@ public class MenuProvider {
             itemInfoList.add(Double.toString(itemInfo.getCalories()));
             itemInfoList.add(Double.toString(itemInfo.getFiber()));
             itemInfoList.add(Double.toString(itemInfo.getProtein()));
+
 
             if(itemInfo.getCalories() < 250){
                 small.put(item.getName(), itemInfoList);

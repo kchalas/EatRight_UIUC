@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -15,14 +14,18 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import api.MenuProvider;
 import api.apiInterface;
+import information.CalorieCategory;
 import information.RestaurantInfo;
+import information.MenuItem;
 
 import static android.widget.CompoundButton.OnCheckedChangeListener;
 
@@ -34,18 +37,22 @@ import static android.widget.CompoundButton.OnCheckedChangeListener;
 public class MenuOfRestaurant extends ActionBarActivity implements
         OnCheckedChangeListener{
     ExpandableListView expt;
-    public ArrayList<MenuItem> chosenItems = new ArrayList<MenuItem>();
+    private ArrayList<MenuItem> chosenItems = new ArrayList<MenuItem>();
+    private HashMap<CalorieCategory, HashMap<information.MenuItem, List<String>>> allData;
+    private MenuProvider mp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Intent restIntent = getIntent();
         //RestaurantInfo rInfo = (RestaurantInfo)restIntent.getSerializableExtra("rest");
         //need to use RestaurantInfo to create a data struct to give to contentView
+        //mp = apiInterface.getMenu(rInfo);
         //Log.i("json to parse ", apiInterface.getMenu(rInfo));
         //set up content view
+        this.allData = DataProvider.getData();
         setContentView(R.layout.activity_menu_of_restaurant);
         expt = (ExpandableListView) findViewById(R.id.expandableListView);
-        expt.setAdapter(new FirstLevelAdapter(this));
+        expt.setAdapter(new FirstLevelAdapter(this, this.allData));
 
 
         Button back = (Button) findViewById(R.id.buttonBack);
@@ -61,6 +68,7 @@ public class MenuOfRestaurant extends ActionBarActivity implements
         pushToViz.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), MainActivity.class);
+                //chosenItems = mp.getSelectedItems();
                 myIntent.putExtra("choices", chosenItems);
                 startActivityForResult(myIntent, 0);
             }
@@ -75,7 +83,7 @@ public class MenuOfRestaurant extends ActionBarActivity implements
         getMenuInflater().inflate(R.menu.menu_menu_of_restaurant, menu);
         return true;
     }
-
+/**
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -96,18 +104,39 @@ public class MenuOfRestaurant extends ActionBarActivity implements
                 chosenItems.remove(item);
             }
         }
-         */
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }**/
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        int pos = expt.getPositionForView(buttonView);
-        expt.getSelectedItemId();
+        Context ctxt = getApplicationContext();
+
+        //expt.getSelectedItem()
+        //int pos = expt.getPositionForView(buttonView);
+        if(buttonView.getTag() instanceof CalorieCategory){
+            CalorieCategory key = (CalorieCategory) buttonView.getTag();
+            CharSequence txt = "Nearby!";
+            Toast tst = Toast.makeText(ctxt, txt, Toast.LENGTH_LONG);
+            tst.show();
+
+        }else if(buttonView.getTag() instanceof information.MenuItem){
+            MenuItem key = (information.MenuItem) buttonView.getTag();
+            CharSequence txt = "No Restaurants Nearby!";
+            Toast tst = Toast.makeText(ctxt, txt, Toast.LENGTH_LONG);
+            tst.show();
+        }else{
+            //toast something went terribly wrong
+            CharSequence txt = "Something went terribly wrong!";
+            Toast tst = Toast.makeText(ctxt, txt, Toast.LENGTH_LONG);
+            tst.show();
+        }
+        //expt.getSelectedItemId();
+
     }
 }
