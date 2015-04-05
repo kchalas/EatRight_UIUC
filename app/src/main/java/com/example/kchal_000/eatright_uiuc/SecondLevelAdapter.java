@@ -103,6 +103,8 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
         CheckBox box = (CheckBox)convertView.findViewById(R.id.checkboxchild);
         box.setOnCheckedChangeListener((MenuOfRestaurant)this.context);
         box.setChecked(this.mealitem.isSelected());
+        box.setTag(this.mealitem);
+        //box.setId();
         //if(box.hasOnClickListeners())
         //TextView tv = new TextView(this.context);
         //tv.setPadding(70, 0, 0, 0);
