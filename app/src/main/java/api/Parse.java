@@ -56,7 +56,28 @@ public class Parse {
     }
 
     public static ArrayList<MenuItem> parseMenu(String jsonData){
-        //TO-DO
+        try {
+            ArrayList<MenuItem>  menuList = new ArrayList<MenuItem> ();
+            JSONObject obj = new JSONObject(jsonData);
+
+            JSONArray sections = obj.getJSONArray("sections");
+
+            for (int i = 0; i < sections.length(); i++) {
+                JSONArray subsections = sections.getJSONObject(i).getJSONArray("subsections");
+                for (int j = 0; j < subsections.length(); j++) {
+                    JSONArray contents = subsections.getJSONObject(j).getJSONArray("contents");
+                    MenuItem entry = new MenuItem();
+                    for (int k = 0; k < subsections.length(); k++) {
+                        String name = contents.getJSONObject(k).getString("name");
+                        entry.setName(name);
+                        menuList.add(entry);
+                    }
+                }
+            }
+            return menuList;
+        }catch(JSONException e){
+            Log.e("error", e.toString());
+        }
 
         return null;
     }
