@@ -62,5 +62,17 @@ public class CalorieCategory {
             m.setSelected(!m.isSelected());
         }
     }**/
+
+    @Override
+    public int hashCode(){
+        return name.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        CalorieCategory category = (CalorieCategory)obj;
+
+        return name.equals(category.getName());
+    }
 }
 
