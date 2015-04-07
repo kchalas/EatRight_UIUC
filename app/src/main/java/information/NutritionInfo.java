@@ -1,6 +1,8 @@
 package information;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NutritionInfo implements Serializable{
     private String name;
@@ -53,5 +55,13 @@ public class NutritionInfo implements Serializable{
 
     public String toString(){
         return name + "`" + calories + "`" + fiber + "`" + protein;
+    }
+
+    public List<String> nutritionToList(){
+        List<String> list = new ArrayList<String>();
+        list.add("Calories: "+calories);
+        list.add("Fiber: "+fiber);
+        list.add("Protein: "+protein);
+        return list;
     }
 }

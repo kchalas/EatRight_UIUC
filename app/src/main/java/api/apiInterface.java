@@ -26,7 +26,7 @@ public class apiInterface {
         return Parse.parseRestaurants(jsonData, lat, lon);
     }
 
-    public static String getMenu(RestaurantInfo restaurant){
+    public static MenuProvider getMenu(RestaurantInfo restaurant){
         LocuAPI apiTask = new LocuAPI();
 
         String jsonData = "";
@@ -38,10 +38,12 @@ public class apiInterface {
             Log.e("error", e.toString());
         }
 
-        return jsonData;
+        ArrayList<MenuItem> itemList = Parse.parseMenu(jsonData);
+        
+        return new MenuProvider(itemList);
     }
 
-    public static NutritionInfo getNutritionInfo(MenuItem item) throws IOException{
+    public static NutritionInfo getNutritionInfo(MenuItem item){
 
         WolframAPI apiTask = new WolframAPI();
 

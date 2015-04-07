@@ -9,7 +9,7 @@
         android:paddingLeft="15dp"
         android:paddingRight="5dp"
         android:focusable="false"
-        android:textSize="14sp"
+        android:textSize="8sp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="3dp"
         android:layout_width="fill_parent"

@@ -15,11 +15,27 @@
         android:layout_height="wrap_content"
         android:text="Back to Restaurants"
         android:id="@+id/buttonBack"
+        android:textSize="16sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:background="#78D5E3"
+        android:clickable="true"
+        android:textColor="#000000" />
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pin Selected Menu Items"
+        android:id="@+id/buttonToViz"
+        android:textSize="16sp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@+id/buttonBack"
         android:background="#78D5E3"
         android:clickable="true"
         android:textColor="#000000" />
@@ -32,8 +48,8 @@
         android:layout_alignParentStart="true"
         android:divider="#34DDDD"
         android:dividerHeight="1dp"
-        android:layout_below="@+id/buttonBack"
-        android:background="#7AF5F5" />
+        android:layout_below="@+id/buttonToViz"
+        android:background="#7AF5F5"/>
 
 
 </RelativeLayout>

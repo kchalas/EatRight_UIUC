@@ -9,6 +9,7 @@ public class RestaurantInfo implements Serializable {
     private double lat;
     private double lon;
 
+
     public RestaurantInfo(){}
 
     public RestaurantInfo(String string){

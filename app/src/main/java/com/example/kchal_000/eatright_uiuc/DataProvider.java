@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import information.CalorieCategory;
+import information.MenuItem;
+
 /**
  * Created by kchal_000 on 3/13/2015.
  */
@@ -11,13 +14,23 @@ public class DataProvider {
     public DataProvider(){
         //empty constructor
     }
-    public static HashMap<String, HashMap<String, List<String>>> getData(){
-        HashMap<String, HashMap<String, List<String>>> categories =
-                new HashMap<String, HashMap<String, List<String>>>();
-        String[] categs = {"Over 750 cal", "500 to 750 cal", "250 to 500 cal", "250 or less cal"};
-        String[] entrees = {"Big Mac", "Chicken Nuggets", "Fish Fillet"};
-        String[] sides = {"coleslaw", "salad", "potatoes", "fries"};
-        String[] dessert = {"ice cream", "scones", "cookies", "pie"};
+    public static HashMap<CalorieCategory, HashMap<MenuItem, List<String>>> getData(){
+        HashMap<CalorieCategory, HashMap<MenuItem, List<String>>> categories =
+                new HashMap<CalorieCategory, HashMap<MenuItem, List<String>>>();
+        CalorieCategory[] categs = {
+                new CalorieCategory("Very High Cal - 750 or more ", 50000, 750),
+                new CalorieCategory("High Cal - 500 to 749", 749, 500),
+                new CalorieCategory("Medium Cal - 250 to 499", 499, 250),
+                new CalorieCategory("Low Cal - 249 or less", 249, 0)};
+
+        MenuItem[] entrees = {new MenuItem("Big Mac`McDonalds"),
+                new MenuItem("Chicken Nuggets`McDonalds"), new MenuItem("Fish Fillet`McDonalds")};
+
+        MenuItem[] sides = {new MenuItem("coleslaw`McDonalds"), new MenuItem("salad`McDonalds"),
+                new MenuItem("potatoes`McDonalds"), new MenuItem("fries`McDonalds")};
+
+        MenuItem[] dessert = {new MenuItem("ice cream`McDonalds"), new MenuItem("scones`McDonalds"),
+                new MenuItem("cookies`McDonalds"), new MenuItem("pie`McDonalds")};
 
         List<String> details = new ArrayList<String>();
         details.add("Calories: 300");
@@ -30,17 +43,17 @@ public class DataProvider {
         detai.add("Crack");
 
 
-        HashMap<String, List<String>> entrs = new HashMap<String, List<String>>();
-        for(String e : entrees){
+        HashMap<MenuItem, List<String>> entrs = new HashMap<MenuItem, List<String>>();
+        for(MenuItem e : entrees){
             entrs.put(e, details);
         }
-        HashMap<String, List<String>> sds = new HashMap<String, List<String>>();
-        for(String e : sides){
+        HashMap<MenuItem, List<String>> sds = new HashMap<MenuItem, List<String>>();
+        for(MenuItem e : sides){
             sds.put(e, detai);
         }
-        HashMap<String, List<String>> ds = new HashMap<String, List<String>>();
+        HashMap<MenuItem, List<String>> ds = new HashMap<MenuItem, List<String>>();
         int i = 0;
-        for(String e : dessert){
+        for(MenuItem e : dessert){
 
             if(i%2 == 0) {
                 ds.put(e, details);
@@ -49,8 +62,9 @@ public class DataProvider {
             }
             i++;
         }
-        HashMap<String, List<String>> vs = new HashMap<>();
-        vs.put("pepsi", details);
+        HashMap<MenuItem, List<String>> vs = new HashMap<>();
+        vs.put(new MenuItem("pepsi`McDonalds"), details);
+
         categories.put(categs[0], entrs);
         categories.put(categs[1], sds);
         categories.put(categs[2], ds);
