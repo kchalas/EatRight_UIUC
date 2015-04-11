@@ -12,6 +12,10 @@ import information.*;
 
 public class apiInterface {
     public static ArrayList<RestaurantInfo> getRestaurants(double lat, double lon) {
+        if(Math.abs(lat) > 180 || Math.abs(lon) > 180){
+            return null;
+        }
+
         YelpAPI apiTask = new YelpAPI();
 
         String jsonData = "";
@@ -39,7 +43,11 @@ public class apiInterface {
         }
 
         ArrayList<MenuItem> itemList = Parse.parseMenu(jsonData);
-        
+
+        if(itemList == null) {
+            return null;
+        }
+
         return new MenuProvider(itemList);
     }
 
@@ -57,6 +65,11 @@ public class apiInterface {
         }
 
         NutritionInfo info = Parse.parseNutritionInfo(xmlData);
+
+        if(info == null){
+            return null;
+        }
+
         info.setName(item.getName());
 
         return info;

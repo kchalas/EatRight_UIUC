@@ -90,6 +90,10 @@ public class MenuProvider {
             list.add(item);
         }
 
+        if(list.isEmpty()){
+            return null;
+        }
+
         return list;
     }
 }

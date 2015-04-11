@@ -119,6 +119,8 @@ public class Parse {
             Log.e("error", e.toString());
         }catch(IOException e){
             Log.e("error", e.toString());
+        }catch(NullPointerException e){
+            return null;
         }
 
         return null;
