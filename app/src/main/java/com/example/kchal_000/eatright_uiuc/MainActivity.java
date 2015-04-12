@@ -39,8 +39,8 @@ public class MainActivity extends ActionBarActivity {
         unity=(float)(size.x/maxProtein);
         unitx=(float)((size.y-250)/maxFiber);
 
-        //pointList[0]=new Meal(7,80,500,"Min Target");
-        //pointList[1]=new Meal(14,160,500,"Max Target");
+        //pointList[0]=new Meal(7,80,500,"Min target");
+        //pointList[1]=new Meal(14,160,500,"Max target");
         pointList[2]=new Meal(1,56,830,"Baconator");
         pointList[3]=new Meal(0,86,379,"Steak");
         pointList[4]=new Meal(3,0.5f,91,"Apple(1)");
