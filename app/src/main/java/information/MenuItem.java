@@ -49,4 +49,15 @@ public class MenuItem implements Serializable {
 
     public void setSelected(boolean selected){this.selected = selected;}
 
+    @Override
+    public int hashCode(){
+        return (name + restaurantName).hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        MenuItem item = (MenuItem)obj;
+
+        return name.equals(item.getName()) && restaurantName.equals(item.getRestaurantName());
+    }
 }

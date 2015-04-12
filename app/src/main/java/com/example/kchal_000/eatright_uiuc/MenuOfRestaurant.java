@@ -122,7 +122,7 @@ public class MenuOfRestaurant extends ActionBarActivity implements
         if(buttonView.getTag() instanceof CalorieCategory){
             CalorieCategory key = (CalorieCategory) buttonView.getTag();
             key.setSelected(!key.isSelected()); //toggle
-            ArrayList<MenuItem> items = mp.getCategory(key.getName());
+            ArrayList<MenuItem> items = mp.getCategory(key);
             CharSequence txt = "Nearby!"+key.getName();
             Toast tst = Toast.makeText(ctxt, txt, Toast.LENGTH_LONG);
             tst.show();
