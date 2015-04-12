@@ -1,21 +1,15 @@
 package com.example.kchal_000.eatright_uiuc;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Point;
-import android.media.Image;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Display;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -31,6 +25,7 @@ public class MainActivity extends ActionBarActivity {
 
         Meal[] pointList;
         final MealCombination mainCombination=new MealCombination();
+        final SwipeCombination swipeCombination;
         int pointNumber=5;
         Point size=new Point();
         float unitx, unity;
@@ -52,10 +47,12 @@ public class MainActivity extends ActionBarActivity {
         pointList[0]=new Meal(4,1f,71,"Orange(1)");
         pointList[1]=new Meal(3,26,520,"Big Mac");
 
+        swipeCombination=new SwipeCombination(pointList);
+
         makeAxisLabels(this,maxFiber,maxProtein,size);
 
         for(int i=0; i<pointNumber;i++) {
-            addContentView(toImageButton(pointList[i],this, unitx, unity,mainCombination), new ViewGroup.LayoutParams(50, 50));
+            addContentView(toImageButton(pointList[i],this,unitx,unity,mainCombination,swipeCombination), new ViewGroup.LayoutParams(50, 50));
         }
 
         ImageButton comb=new ImageButton(this);
@@ -71,7 +68,7 @@ public class MainActivity extends ActionBarActivity {
 
         mainCombination.setImageButton(comb,unitx, unity);
         addContentView(mainCombination.getImageButton(), new ViewGroup.LayoutParams(75, 75));
-        userInterface(this,size,mainCombination);
+        userInterface(this,size,mainCombination,swipeCombination);
     }
 
     public void makeAxisLabels(Context context, float maxFiber, float maxProtein, Point size){
@@ -135,7 +132,7 @@ public class MainActivity extends ActionBarActivity {
         addContentView(ymax,new ViewGroup.LayoutParams(50,50));
     }
 
-    public void userInterface(Context context, Point size,final MealCombination mealCombination){
+    public void userInterface(Context context, Point size,final MealCombination mealCombination, final SwipeCombination swipeCombination){
         ImageButton add, combine, swipe;
 
         add=new ImageButton(this);
@@ -157,13 +154,17 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 if(mealCombination.getCombine()){
                     mealCombination.unsetCombine();
-                    v.setBackgroundResource(R.drawable.combine);
                 }else{
                     mealCombination.setCombine();
-                    v.setBackgroundResource(R.drawable.combinetoggle);
+                    if(swipeCombination.getSwiping()){
+                        swipeCombination.unsetSwiping();
+                        swipeCombination.finalize();
+                        mealCombination.update();
+                    }
                 }
             }
         });
+        mealCombination.setIcon(combine);
 
         swipe=new ImageButton(this);
         swipe.setBackgroundResource(R.drawable.swipe);
@@ -171,13 +172,19 @@ public class MainActivity extends ActionBarActivity {
         swipe.setTranslationY(size.y - 400);
         swipe.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //if(mealCombination.getCombine()){
-                //    mealCombination.unsetCombine();
-                //}else{
-                //    mealCombination.setCombine();
-                //}
+                if(swipeCombination.getSwiping()){
+                    swipeCombination.unsetSwiping();
+                    swipeCombination.finalize();
+                    mealCombination.update();
+                }else{
+                    swipeCombination.setSwiping();
+                    if(mealCombination.getCombine()){
+                        mealCombination.unsetCombine();
+                    }
+                }
             }
         });
+        swipeCombination.setIcon(swipe);
 
         addContentView(add,new ViewGroup.LayoutParams(150,150));
         addContentView(combine,new ViewGroup.LayoutParams(150,150));
@@ -185,7 +192,7 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    public ImageButton toImageButton(final Meal meal, Context context,float ux, float uy,final MealCombination mealCombination){
+    public ImageButton toImageButton(final Meal meal, Context context,float ux, float uy,final MealCombination mealCombination, final SwipeCombination swipeCombination){
         ImageButton ib=new ImageButton(context);
         float posx=0,posy=0;
 
@@ -196,21 +203,34 @@ public class MainActivity extends ActionBarActivity {
         ib.setTranslationY(posy-25);
         ib.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(!mealCombination.getCombine()){
-                Intent intent = new Intent(v.getContext(), DetailActivity.class);
-                intent.putExtra("Meal",meal.toString());
-
-                startActivity(intent);}
-                else{
+                if(mealCombination.getCombine() ){
                     mealCombination.addDropMeal(meal);
-                    if(mealCombination.isCombined(meal)){
-                        v.setBackgroundResource(R.drawable.pointtoggle);
-                    }else{
+                    if (mealCombination.isCombined(meal)) {
+                        v.setBackgroundResource(R.drawable.pointcombination);
+                    } else {
                         v.setBackgroundResource(R.drawable.point);
+                    }
+                } else {
+                    if(swipeCombination.getSwiping()){
+                        swipeCombination.addDrop(v);
+                        if(mealCombination.isCombined(meal)){
+                            mealCombination.addDropMeal(meal);
+                        }
+                        if (swipeCombination.isSwiped(meal)) {
+                            v.setBackgroundResource(R.drawable.pointswiping);
+                        } else {
+                            v.setBackgroundResource(R.drawable.point);
+                        }
+                    } else {
+                        Intent intent = new Intent(v.getContext(), DetailActivity.class);
+                        intent.putExtra("Meal",meal.toString());
+
+                        startActivity(intent);
                     }
                 }
             }
         });
+        meal.setImageButton(ib);
 
         return ib;
     }

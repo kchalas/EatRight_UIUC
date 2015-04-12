@@ -1,5 +1,6 @@
 package com.example.kchal_000.eatright_uiuc;
 
+import android.media.Image;
 import android.widget.ImageButton;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class MealCombination {
     float calories = 0;
     float unitx, unity;
     ImageButton combine;
+    ImageButton ib;
     boolean isCombining=false;
 
     public MealCombination(float f, float p, float c, Meal m) {
@@ -68,8 +70,18 @@ public class MealCombination {
         update();
     }
 
-    public void setCombine(){isCombining=true;}
-    public void unsetCombine(){isCombining=false;}
+    public void setIcon(ImageButton imageButton){
+        ib=imageButton;
+    }
+
+    public void setCombine(){
+        isCombining=true;
+        ib.setBackgroundResource(R.drawable.combinetoggle);
+    }
+    public void unsetCombine(){
+        isCombining=false;
+        ib.setBackgroundResource(R.drawable.combine);
+    }
     public boolean getCombine(){return  isCombining;}
 
     public ImageButton getImageButton(){return combine;}

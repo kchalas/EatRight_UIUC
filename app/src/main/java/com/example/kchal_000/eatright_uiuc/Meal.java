@@ -14,6 +14,7 @@ public class Meal {
     float protein = 0;          //y position of the point
     float calories = 0;
     String id = "";
+    ImageButton ib;
 
     public Meal(float f, float p, float c, String s) {
         protein = p;
@@ -54,4 +55,7 @@ public class Meal {
         fiber=Float.valueOf(data[2]);
         protein=Float.valueOf(data[3]);
     }
+
+    public void setImageButton(ImageButton imageButton){ ib=imageButton;}
+    public ImageButton getImageButton(){return ib;}
 }
