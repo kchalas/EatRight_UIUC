@@ -29,6 +29,22 @@ public class MealCombination {
     public MealCombination(){
     }
 
+    public float mealCombinationGetFiber(MealCombination comb) {
+
+        return comb.fiber;
+    }
+
+    public float mealCombinationGetProtein(MealCombination comb) {
+
+        return comb.protein;
+    }
+
+    public float mealCombinationGetCalories(MealCombination comb) {
+
+        return comb.calories;
+    }
+
+
     public void update(){
         float posx=0,posy=0;
 
@@ -104,7 +120,7 @@ public class MealCombination {
         String name="";
 
         for (Meal meal : mealList) {
-                name+=meal.getId()+" and ";
+            name+=meal.getId()+" and ";
         }
 
         name=name.substring(0,(name.length()-5));
