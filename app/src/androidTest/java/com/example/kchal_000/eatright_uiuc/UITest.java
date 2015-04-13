@@ -117,6 +117,10 @@ public class UITest extends UiAutomatorTestCase{
 
     public void testVisualization() throws UiObjectNotFoundException{
 
+        testRestaurantSelection1();
+        UiObject seeVisual = new UiObject( new UiSelector().resourceId("com.example.kchal_000.eatright_uiuc:id/buttonToViz"));
+        seeVisual.click();
+
     }
 
     public void resetDeviceUI() throws UiObjectNotFoundException{
