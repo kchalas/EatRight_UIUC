@@ -59,9 +59,12 @@ public class Parse {
         try {
             ArrayList<MenuItem>  menuList = new ArrayList<MenuItem> ();
             JSONObject obj = new JSONObject(jsonData);
-
-            JSONArray sections = obj.getJSONArray("sections");
-
+            Log.i("object",obj.toString());
+            JSONArray venues = obj.getJSONArray("venues");
+            Log.i("vget",venues.toString());
+            JSONArray menus = venues.getJSONObject(0).getJSONArray("menus");
+            System.out.println(menus.toString());
+            JSONArray sections=menus.getJSONObject(0).getJSONArray("sections");
             for (int i = 0; i < sections.length(); i++) {
                 JSONArray subsections = sections.getJSONObject(i).getJSONArray("subsections");
                 for (int j = 0; j < subsections.length(); j++) {

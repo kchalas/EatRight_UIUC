@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 
 public class DetailActivity extends ActionBarActivity {
@@ -21,22 +22,44 @@ public class DetailActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        String message = intent.getStringExtra("Meal.ID");
+        String message = intent.getStringExtra("Meal");
+        Meal meal=new Meal(message);
         Point size=new Point();
         Display D=getWindowManager().getDefaultDisplay();
 
         D.getSize(size);
 
-        EditText name=new EditText(this);
-        name.setText(message);
+        TextView name=new TextView(this);
+        name.setText(meal.getId());
         name.setTextSize(20f);
         name.setPadding(0, 0, 0, 0);
         name.setTranslationX(0);
         name.setTranslationY(0);
 
+        TextView cal=new TextView(this);
+        cal.setText("Calories: "+meal.getCalories()+"(g)");
+        cal.setTextSize(20f);
+        cal.setPadding(0, 0, 0, 0);
+        cal.setTranslationX(0);
+        cal.setTranslationY(100);
+
+        TextView fib=new TextView(this);
+        fib.setText("Fiber: "+meal.getFiber()+"(g)");
+        fib.setTextSize(20f);
+        fib.setPadding(0, 0, 0, 0);
+        fib.setTranslationX(0);
+        fib.setTranslationY(200);
+
+        TextView prot=new TextView(this);
+        prot.setText("Protein: "+meal.getProtein()+"(g)");
+        prot.setTextSize(20f);
+        prot.setPadding(0, 0, 0, 0);
+        prot.setTranslationX(0);
+        prot.setTranslationY(300);
+
         Button back=new Button(this);
         back.setText("Back");
-        back.setTranslationY(200);
+        back.setTranslationY(400);
         back.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), MainActivity.class);
@@ -45,7 +68,10 @@ public class DetailActivity extends ActionBarActivity {
         });
 
         addContentView(back,new ViewGroup.LayoutParams(size.x,200));
-        addContentView(name, new ViewGroup.LayoutParams(400, 100));
+        addContentView(name, new ViewGroup.LayoutParams(600, 100));
+        addContentView(cal, new ViewGroup.LayoutParams(600, 100));
+        addContentView(fib, new ViewGroup.LayoutParams(600, 100));
+        addContentView(prot, new ViewGroup.LayoutParams(600, 100));
 
     }
 
