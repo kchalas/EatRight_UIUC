@@ -96,4 +96,24 @@ public class MenuProvider {
 
         return list;
     }
+
+    public ArrayList<MenuItem> getCheckedItems(){
+        ArrayList<MenuItem> list = new ArrayList<>();
+
+        for(CalorieCategory category : categories){
+            ArrayList<MenuItem> categoryList = getCategory(category);
+
+            if(category.isSelected()){
+                list.addAll(categoryList);
+            }else{
+                for(MenuItem item : categoryList){
+                    if(item.isSelected()){
+                        list.add(item);
+                    }
+                }
+            }
+        }
+
+        return list;
+    }
 }
