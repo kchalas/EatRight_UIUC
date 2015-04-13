@@ -112,6 +112,7 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
         nxtList.setAdapter(new SecondLevelAdapter(this.context,  childPosition, chP));
         convertView = nxtList;
         //convertView.setPadding(20, 0, 0, 0);
+        notifyDataSetChanged();
         return convertView;
         //return tv;
     }
