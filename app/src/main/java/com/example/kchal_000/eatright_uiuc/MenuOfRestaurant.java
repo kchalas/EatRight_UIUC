@@ -44,13 +44,13 @@ public class MenuOfRestaurant extends ActionBarActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent restIntent = getIntent();
-        //RestaurantInfo rInfo = (RestaurantInfo)restIntent.getSerializableExtra("rest");
+        RestaurantInfo rInfo = (RestaurantInfo)restIntent.getSerializableExtra("rest");
         //need to use RestaurantInfo to create a data struct to give to contentView
-        //mp = apiInterface.getMenu(rInfo);
-        //Log.i("json to parse ", apiInterface.getMenu(rInfo));
+        mp = apiInterface.getMenu(rInfo);
+        //Log.i("json to parse ", apiInterface.getMenu(rInfo).toString());
         //set up content view
-        //this.allData = mp.getMenu();
-        this.allData = DataProvider.getData();
+        this.allData = mp.getMenu();
+        //this.allData = DataProvider.getData();
         setContentView(R.layout.activity_menu_of_restaurant);
         expt = (ExpandableListView) findViewById(R.id.expandableListView);
         expt.setAdapter(new FirstLevelAdapter(this, this.allData));
@@ -69,7 +69,7 @@ public class MenuOfRestaurant extends ActionBarActivity implements
         pushToViz.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), MainActivity.class);
-                //chosenItems = mp.getSelectedItems();
+                chosenItems = mp.getCheckedItems();
 
 
                 Log.i("chosenItemsTopass ", ""+chosenItems.size());
@@ -88,35 +88,7 @@ public class MenuOfRestaurant extends ActionBarActivity implements
         getMenuInflater().inflate(R.menu.menu_menu_of_restaurant, menu);
         return true;
     }
-/**
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //should provide another layer of assurance that
-        //the chosenItems will be a final say on all items
-        //passed to the next activity
-        /**
-        if(item.isChecked()){
-            if(!chosenItems.contains(item)){
-                chosenItems.add(item);
-            }
-        }else{
-            if(chosenItems.contains(item)){
-                chosenItems.remove(item);
-            }
-        }
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }**/
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -127,9 +99,9 @@ public class MenuOfRestaurant extends ActionBarActivity implements
         if(buttonView.getTag() instanceof CalorieCategory){
             CalorieCategory key = (CalorieCategory) buttonView.getTag();
             key.setSelected(!key.isSelected()); //toggle
-            //ArrayList<MenuItem> items = mp.getCategory(key);    <---------------uncomment
+            ArrayList<MenuItem> items = mp.getCategory(key);   // <---------------uncomment
             HashMap<MenuItem, List<String>> test = allData.get(key);
-            Set<MenuItem> items = test.keySet();
+            //Set<MenuItem> items = test.keySet();   testing alternative to items ArrayList
 
             CharSequence txt = "Nearby!"+key.getName();
             Toast tst = Toast.makeText(ctxt, txt, Toast.LENGTH_LONG);
@@ -164,9 +136,9 @@ public class MenuOfRestaurant extends ActionBarActivity implements
             tst.show();
         }else{
             //toast something went terribly wrong
-            CharSequence txt = "Something went terribly wrong!";
-            Toast tst = Toast.makeText(ctxt, txt, Toast.LENGTH_LONG);
-            tst.show();
+            //CharSequence txt = "Something went terribly wrong!";
+            //Toast tst = Toast.makeText(ctxt, txt, Toast.LENGTH_LONG);
+            //tst.show();
         }
         //expt.getSelectedItemId();
 
