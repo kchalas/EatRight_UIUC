@@ -61,7 +61,7 @@ public class Parse {
             MenuItem entry= new MenuItem();
             JSONObject obj = new JSONObject(jsonData);
             JSONArray venues = obj.getJSONArray("venues");
-            System.out.println(venues.toString());
+            System.out.println(jsonData);
             for (int l = 0;l<venues.length();l++) {
                 if(venues.getJSONObject(l).isNull("menus")){
                     continue;

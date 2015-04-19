@@ -2,6 +2,8 @@ package api;
 
 import android.view.Menu;
 
+import com.example.kchal_000.eatright_uiuc.DataProvider;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -105,10 +107,12 @@ public class MenuProvider {
 
             if(category.isSelected()){
                 list.addAll(categoryList);
-            }else{
-                for(MenuItem item : categoryList){
-                    if(item.isSelected()){
-                        list.add(item);
+            }else {
+                if (categoryList != null){
+                    for (MenuItem item : categoryList) {
+                        if (item.isSelected()) {
+                            list.add(item);
+                        }
                     }
                 }
             }

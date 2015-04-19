@@ -1,8 +1,11 @@
 package com.example.kchal_000.eatright_uiuc;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import information.CalorieCategory;
 import information.MenuItem;
@@ -11,6 +14,8 @@ import information.MenuItem;
  * Created by kchal_000 on 3/13/2015.
  */
 public class DataProvider {
+    public HashMap<CalorieCategory, HashMap<MenuItem, List<String>>> categories =
+            new HashMap<CalorieCategory, HashMap<MenuItem, List<String>>>();
     public DataProvider(){
         //empty constructor
     }
@@ -33,6 +38,8 @@ public class DataProvider {
                 new MenuItem("cookies`McDonalds"), new MenuItem("pie`McDonalds")};
 
         List<String> details = new ArrayList<String>();
+        details.add("Name");
+
         details.add("Calories: 300");
         details.add("Protein: 5g");
         details.add("Dietary Fiber: 3g");
@@ -71,5 +78,58 @@ public class DataProvider {
         categories.put(categs[3], vs);
         return categories;
 
+    }
+
+    public ArrayList<MenuItem> getCategory(CalorieCategory c){
+        HashMap<MenuItem, List<String>> cts = categories.get(c);
+        Log.i("category", ""+ c.getName());
+        //Set<MenuItem> menu = cts.keySet();
+        //Log.i()
+        ArrayList<MenuItem> mn = new ArrayList<MenuItem>();
+        /**
+        for(MenuItem ms : menu ){
+            mn.add(ms);
+        }**/
+        return mn;
+    }
+
+    public ArrayList<MenuItem> getCheckedItems(){
+        Set<CalorieCategory> cats =  categories.keySet();
+        ArrayList<MenuItem> chosens = new ArrayList<MenuItem>();
+        for(CalorieCategory c : cats ){
+            if(c.isSelected()){
+                ArrayList<MenuItem> mn = getCategory(c);
+                for(MenuItem m : mn){
+                    if(m.isSelected()){
+                        chosens.add(m);
+                    }
+                }
+            }
+        }
+        return chosens;
+    }
+
+    public ArrayList<MenuItem> getMenuItems(){
+        ArrayList<MenuItem> dt = new ArrayList<>();
+        MenuItem[] entrees = {new MenuItem("Big Mac`McDonalds"),
+                new MenuItem("Chicken Nuggets`McDonalds"), new MenuItem("Side Salad`McDonalds")};
+
+        //MenuItem[] sides = {new MenuItem("Cheeseburger`McDonalds"), new MenuItem("McChicken`McDonalds"),
+                //new MenuItem("McDouble`McDonalds"), new MenuItem("World Famous Fries`McDonalds")};
+
+        //MenuItem[] dessert = {new MenuItem("Iced Tea`McDonalds"), new MenuItem("Big Breakfast`McDonalds"),
+               // new MenuItem("McCafe Frappe Mocha`McDonalds"), new MenuItem("Hotcakes`McDonalds")};
+
+        for(MenuItem e : entrees){
+            dt.add(e);
+        }
+                /**
+        for(MenuItem e : sides){
+            dt.add(e);
+        }
+        for(MenuItem e : dessert){
+            dt.add(e);
+        }*/
+        return dt;
     }
 }
