@@ -42,10 +42,18 @@ public class apiInterface {
             Log.e("error", e.toString());
         }
 
+        int maxLogSize = 1000;
+        for(int i = 0; i <= jsonData.length() / maxLogSize; i++) {
+            int start = i * maxLogSize;
+            int end = (i+1) * maxLogSize;
+            end = end > jsonData.length() ? jsonData.length() : end;
+            Log.v("locu_output", jsonData.substring(start, end));
+        }
+
         ArrayList<MenuItem> itemList = Parse.parseMenu(jsonData);
 
         if(itemList == null) {
-            return null;
+            return new MenuProvider(new ArrayList<MenuItem>());
         }
 
         return new MenuProvider(itemList);
@@ -62,6 +70,10 @@ public class apiInterface {
             Log.e("error", e.toString());
         }catch(ExecutionException e){
             Log.e("error", e.toString());
+        }
+
+        if(xmlData == null){
+            return null;
         }
 
         NutritionInfo info = Parse.parseNutritionInfo(xmlData);
