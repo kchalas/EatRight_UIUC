@@ -32,9 +32,12 @@ public class WolframAPI extends AsyncTask<MenuItem, Void, String> {
                 response.append(line);
             }
 
+            Log.v("wolfram_out", response.toString());
             return response.toString();
         }catch(IOException e){
             Log.e("error", e.toString());
+        }catch(NullPointerException e){
+            return null;
         }
 
         return "";

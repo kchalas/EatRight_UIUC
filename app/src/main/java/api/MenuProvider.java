@@ -17,8 +17,11 @@ import information.NutritionInfo;
 public class MenuProvider {
     private HashMap<CalorieCategory, HashMap<MenuItem, List<String>>> menu;
     private ArrayList<CalorieCategory> categories;
+    private boolean empty;
 
     public MenuProvider(ArrayList<MenuItem> menuList){
+        empty = true;
+
         menu = new HashMap<>();
         HashMap<MenuItem, List<String>> small = new HashMap<>();
         HashMap<MenuItem, List<String>> medium = new HashMap<>();
@@ -29,22 +32,26 @@ public class MenuProvider {
         for(MenuItem item : menuList){
             NutritionInfo itemInfo = apiInterface.getNutritionInfo(item);
 
-            List<String> itemInfoList = new ArrayList<>();
-            itemInfoList.add(item.getName());
-            itemInfoList.add(item.getRestaurantName());
-            itemInfoList.add(Double.toString(itemInfo.getCalories()));
-            itemInfoList.add(Double.toString(itemInfo.getFiber()));
-            itemInfoList.add(Double.toString(itemInfo.getProtein()));
+            if(itemInfo != null) {
+                List<String> itemInfoList = new ArrayList<>();
+                itemInfoList.add(item.getName());
+                itemInfoList.add(item.getRestaurantName());
+                itemInfoList.add(Double.toString(itemInfo.getCalories()));
+                itemInfoList.add(Double.toString(itemInfo.getFiber()));
+                itemInfoList.add(Double.toString(itemInfo.getProtein()));
 
 
-            if(itemInfo.getCalories() < 250){
-                small.put(item, itemInfoList);
-            }else if(itemInfo.getCalories() >= 250 && itemInfo.getCalories() < 500){
-                medium.put(item, itemInfoList);
-            }else if(itemInfo.getCalories() >= 750){
-                veryBig.put(item, itemInfoList);
-            }else{
-                big.put(item, itemInfoList);
+                if (itemInfo.getCalories() < 250) {
+                    small.put(item, itemInfoList);
+                } else if (itemInfo.getCalories() >= 250 && itemInfo.getCalories() < 500) {
+                    medium.put(item, itemInfoList);
+                } else if (itemInfo.getCalories() >= 750) {
+                    veryBig.put(item, itemInfoList);
+                } else {
+                    big.put(item, itemInfoList);
+                }
+
+                empty = false;
             }
         }
 
@@ -92,10 +99,6 @@ public class MenuProvider {
             list.add(item);
         }
 
-        if(list.isEmpty()){
-            return null;
-        }
-
         return list;
     }
 
@@ -119,5 +122,9 @@ public class MenuProvider {
         }
 
         return list;
+    }
+
+    public boolean isEmpty(){
+        return empty;
     }
 }

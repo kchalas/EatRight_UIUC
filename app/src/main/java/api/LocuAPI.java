@@ -55,6 +55,8 @@ public class LocuAPI extends AsyncTask<RestaurantInfo, Void, String> {
                 }
 
                 return response.toString();
+            }else{
+                Log.e("response_code", Integer.toString(responseCode));
             }
         }catch(ProtocolException e){
             Log.e("error", e.toString());
@@ -74,7 +76,8 @@ public class LocuAPI extends AsyncTask<RestaurantInfo, Void, String> {
             json.put("api_key", appid);
 
             JSONArray jsonArr = new JSONArray();
-            jsonArr.put("menus");
+            jsonArr.put("name");
+            //jsonArr.put("menus");
             json.put("fields", jsonArr);
 
             JSONObject queryObject = new JSONObject();
@@ -95,6 +98,13 @@ public class LocuAPI extends AsyncTask<RestaurantInfo, Void, String> {
 
             json.put("venue_queries", jsonArr);
 
+            jsonArr = new JSONArray();
+            queryObject = new JSONObject();
+            queryObject.put("type", "ITEM");
+            jsonArr.put(queryObject);
+
+            json.put("menu_item_queries", jsonArr);
+            Log.v("json", json.toString());
             return json;
 
         }catch(JSONException e){
