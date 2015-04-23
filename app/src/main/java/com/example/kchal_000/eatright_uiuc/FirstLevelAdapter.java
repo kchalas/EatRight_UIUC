@@ -78,6 +78,7 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
             convertView = inflater.inflate(R.layout.meals_list,null); //resource, viewgroup
             boxP = (CheckBox)convertView.findViewById(R.id.checkbox);
             boxP.setOnCheckedChangeListener((MenuOfRestaurant)this.context);
+            boxP.setChecked(categ.isSelected());
             //holder = new GroupViewHolder();
             //holder.tv = (TextView) convertView.findViewById(R.id.mealname);
             //holder.check = (CheckBox) convertView.findViewById(R.id.checkboxchild);
@@ -87,7 +88,7 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
         TextView tv = (TextView) convertView.findViewById(R.id.parentname);
         tv.setText(str);
         boxP = (CheckBox)convertView.findViewById(R.id.checkbox);
-        //boxP.setOnCheckedChangeListener((MenuOfRestaurant)this.context);
+        boxP.setOnCheckedChangeListener((MenuOfRestaurant)this.context);
         boxP.setChecked(categ.isSelected());
         boxP.setTag(categ);
         return convertView;

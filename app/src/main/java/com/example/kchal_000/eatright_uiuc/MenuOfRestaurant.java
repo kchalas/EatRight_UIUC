@@ -71,7 +71,7 @@ public class MenuOfRestaurant extends ActionBarActivity implements
         pushToViz.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), MainActivity.class);
-                chosenItems.addAll(mp.getCheckedItems());
+                //chosenItems.addAll(mp.getCheckedItems());
                 //chosenItems = dp.getCheckedItems();
 
 
@@ -102,10 +102,15 @@ public class MenuOfRestaurant extends ActionBarActivity implements
         if(buttonView.getTag() instanceof CalorieCategory){
             CalorieCategory key = (CalorieCategory) buttonView.getTag();
             key.setSelected(!key.isSelected()); //toggle
-            ArrayList<MenuItem> items = mp.getCategory(key);   // <---------------uncomment
-
+            //ArrayList<MenuItem> items = mp.getCategory(key);   // <---------------uncomment
+            Log.i("chosen is true ", ""+key.isSelected()+"");
             HashMap<MenuItem, List<String>> test = allData.get(key);
             //Set<MenuItem> items = test.keySet();   testing alternative to items ArrayList
+            Object[] keys = test.keySet().toArray();
+            ArrayList<MenuItem> items = new ArrayList<MenuItem>();
+            for(Object k : keys){
+                items.add((MenuItem)k);
+            }
             Log.i("getCat", items.size()+"");
             CharSequence txt = "Nearby!"+key.getName();
             Toast tst = Toast.makeText(ctxt, txt, Toast.LENGTH_LONG);
@@ -113,16 +118,21 @@ public class MenuOfRestaurant extends ActionBarActivity implements
             if(key.isSelected()) {
                 for (MenuItem i : items) {
                     i.setSelected(true);
+                    chosenItems.add(i);
+                    buttonView.invalidate();
                 }
             }else{
                 for(MenuItem i : items){
                     i.setSelected(false);
+                    chosenItems.remove(i);
                 }
             }
 
+
         }else if(buttonView.getTag() instanceof information.MenuItem){
             MenuItem key = (information.MenuItem) buttonView.getTag();
-            HashMap<MenuItem, List<String>> categItems = allData.get(key);
+            Log.i("selected?", " "+key.isSelected());
+            //HashMap<MenuItem, List<String>> categItems = allData.get(key);
             key.setSelected(!key.isSelected()); //toggle
             Log.i("selected?", " "+key.isSelected());
             if(key.isSelected()){
