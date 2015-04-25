@@ -13,11 +13,11 @@ import java.util.ArrayList;
 public class SwipeCombination {
 
     ArrayList<View> viewList= new ArrayList<View>();
-    Meal[] mealList;
+    ArrayList<Meal> mealList= new ArrayList<Meal>();;
     boolean swiping=false;
     ImageButton ib;
 
-    public SwipeCombination(Meal[] meallist){
+    public SwipeCombination(ArrayList<Meal> meallist){
         mealList=meallist;
     }
 
@@ -33,36 +33,26 @@ public class SwipeCombination {
         }
     }
 
-    public void finalize(){
+    public void finalizeSwipe(){
         boolean flag=true;
-        boolean[] newList=new boolean[mealList.length];
+        ArrayList<ImageButton> newList=new ArrayList<ImageButton>();
         int counter=0;
 
         if(viewList.size()>0) {
 
-            for (int i = 0; i < newList.length; i++) {
-                newList[i] = true;
+            ArrayList<Meal> newMealList=new ArrayList<Meal>();
+
+            for (Meal meal : mealList) {
+                if(!viewList.contains(meal.getImageButton())){
+                    newMealList.add(meal);
+                    newList.add(meal.getImageButton());
+                }
             }
 
             for (View ib : viewList) {
-                for (int i = 0; i < mealList.length; i++) {
-                    if (ib == mealList[i].getImageButton()) {
-                        newList[i] = false;
-                        counter += 1;
-                        break;
-                    }
-                }
+                if(!newList.contains(ib)){
                 ib.setClickable(false);
                 ib.setVisibility(View.INVISIBLE);
-            }
-
-            Meal[] newMealList = new Meal[mealList.length - counter];
-            counter=0;
-
-            for (int i = 0; i < mealList.length; i++) {
-                if (newList[i]) {
-                    newMealList[counter] = mealList[i];
-                    counter += 1;
                 }
             }
 
@@ -86,4 +76,6 @@ public class SwipeCombination {
         ib.setBackgroundResource(R.drawable.swipe);
     }
     public boolean getSwiping(){return  swiping;}
+
+    public ArrayList<Meal> getList(){return mealList;}
 }

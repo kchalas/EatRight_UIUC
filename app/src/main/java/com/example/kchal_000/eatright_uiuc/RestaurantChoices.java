@@ -45,6 +45,8 @@ public class RestaurantChoices extends ActionBarActivity {
         String[] array = {"#6CCECB", "#F9E559", "#EF7126" ,"#8EDC9D"};
         //double[] location = getLocation();
         ArrayList<RestaurantInfo> temp = apiInterface.getRestaurants(40.11000, -88.22700);
+        Intent restIntent = getIntent();
+        final ArrayList<information.MenuItem> chosenItems = (ArrayList<information.MenuItem>)restIntent.getSerializableExtra("MealList");
 
         if(temp!=null ) {
             if(!temp.isEmpty()) {
@@ -71,6 +73,7 @@ public class RestaurantChoices extends ActionBarActivity {
                             Intent myIntent = new Intent(view.getContext(), MenuOfRestaurant.class);
                             myIntent.putExtra("name", button.getText());
                             myIntent.putExtra("rest", rests.get(button.getText()));
+                            myIntent.putExtra("MealList", chosenItems);
                             startActivityForResult(myIntent, 0);
                         }
 

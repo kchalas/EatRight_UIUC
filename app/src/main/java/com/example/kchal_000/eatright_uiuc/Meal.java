@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.widget.ImageButton;
 import android.view.View;
 
+import information.MenuItem;
+import information.NutritionInfo;
+
 /**
  * Created by Francisco RC on 2/20/2015.
  */
@@ -14,6 +17,7 @@ public class Meal {
     float protein = 0;          //y position of the point
     float calories = 0;
     String id = "";
+    String source="";
     ImageButton ib;
 
     public Meal(float f, float p, float c, String s) {
@@ -21,6 +25,23 @@ public class Meal {
         fiber = f;
         calories = c;
         id = s;
+    }
+
+    public Meal(MenuItem item){
+        NutritionInfo nut;
+
+        id=item.getName();
+        source=item.getRestaurantName();
+        nut=item.getNutritionInfo();
+        if(nut!=null){
+            fiber=(float)nut.getFiber();
+            protein=(float)nut.getProtein();
+            calories=(float)nut.getCalories();
+        }else{
+            fiber=1;
+            protein=1;
+            calories=1;
+        }
     }
 
     public Meal(String string){
@@ -39,6 +60,9 @@ public class Meal {
         return id;
     }
     public void setId(String s) { id=s; }
+
+    public String getSource(){ return source;}
+    public void setSource(String s){source=s;}
 
     public boolean equals(Meal meal) {
 

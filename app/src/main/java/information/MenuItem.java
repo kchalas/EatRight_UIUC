@@ -1,5 +1,7 @@
 package information;
 
+import com.example.kchal_000.eatright_uiuc.Meal;
+
 import java.io.Serializable;
 
 public class MenuItem implements Serializable {
@@ -15,6 +17,12 @@ public class MenuItem implements Serializable {
 
         name = strings[0];
         restaurantName = strings[1];
+    }
+
+    public MenuItem(Meal meal){
+        name=meal.getId();
+        restaurantName=meal.getSource();
+        nutritionInfo=new NutritionInfo(meal.getFiber(),meal.getProtein(),meal.getCalories(),name);
     }
 
     public String getName() {

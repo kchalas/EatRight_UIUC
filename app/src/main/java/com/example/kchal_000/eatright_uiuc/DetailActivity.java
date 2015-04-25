@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 
 public class DetailActivity extends ActionBarActivity {
 
@@ -26,6 +28,7 @@ public class DetailActivity extends ActionBarActivity {
         Meal meal=new Meal(message);
         Point size=new Point();
         Display D=getWindowManager().getDefaultDisplay();
+        final ArrayList<information.MenuItem> list=(ArrayList<information.MenuItem>)intent.getSerializableExtra("MealList");
 
         D.getSize(size);
 
@@ -63,12 +66,13 @@ public class DetailActivity extends ActionBarActivity {
         back.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), MainActivity.class);
+                intent.putExtra("MealList",list);
                 startActivity(intent);
             }
         });
 
         addContentView(back,new ViewGroup.LayoutParams(size.x,200));
-        addContentView(name, new ViewGroup.LayoutParams(600, 100));
+        addContentView(name, new ViewGroup.LayoutParams(size.x, 100));
         addContentView(cal, new ViewGroup.LayoutParams(600, 100));
         addContentView(fib, new ViewGroup.LayoutParams(600, 100));
         addContentView(prot, new ViewGroup.LayoutParams(600, 100));

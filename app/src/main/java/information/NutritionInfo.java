@@ -21,6 +21,13 @@ public class NutritionInfo implements Serializable{
         protein = Double.parseDouble(strings[3]);
     }
 
+    public NutritionInfo(float f, float p, float c, String s){
+        fiber=f;
+        protein=p;
+        calories=c;
+        name=s;
+    }
+
     public String getName() {
         return name;
     }

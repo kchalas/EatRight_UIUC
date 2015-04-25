@@ -13,6 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
+import information.NutritionInfo;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -23,44 +27,57 @@ public class MainActivity extends ActionBarActivity {
         //decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        Meal[] pointList;
+        ArrayList<Meal> pointList =new ArrayList<Meal>();
         final MealCombination mainCombination=new MealCombination();
         final SwipeCombination swipeCombination;
-        int pointNumber=5;
         Point size=new Point();
         float unitx, unity;
         float maxProtein=64f;
         float maxFiber=29f;
+        Intent intent=getIntent();
         Display D=getWindowManager().getDefaultDisplay();
-
-        pointList=new Meal[pointNumber];
+        ArrayList<information.MenuItem> intentList=(ArrayList<information.MenuItem>)intent.getSerializableExtra("MealList");
 
         D.getSize(size);
         unity=(float)(size.x/maxProtein);
         unitx=(float)((size.y-250)/maxFiber);
 
-        //pointList[0]=new Meal(7,80,500,"Min target");
-        //pointList[1]=new Meal(14,160,500,"Max target");
-        pointList[2]=new Meal(1,56,830,"Baconator");
-        pointList[3]=new Meal(0,86,379,"Steak");
-        pointList[4]=new Meal(3,0.5f,91,"Apple(1)");
-        pointList[0]=new Meal(4,1f,71,"Orange(1)");
-        pointList[1]=new Meal(3,26,520,"Big Mac");
+        if(intentList!=null && intentList.size()>0){
+            for(information.MenuItem item: intentList){
+                pointList.add(new Meal(item));
+            }
+        }else {
+
+            pointList.add(new Meal(7, 80, 500, "Min target"));
+            pointList.add(new Meal(14, 160, 500, "Max target"));
+            pointList.add(new Meal(1, 56, 830, "Baconator"));
+            pointList.add(new Meal(0, 86, 379, "Steak"));
+            pointList.add(new Meal(3, 0.5f, 91, "Apple(1)"));
+            pointList.add(new Meal(4, 1f, 71, "Orange(1)"));
+            pointList.add(new Meal(3, 26, 520, "Big Mac"));
+
+        }
 
         swipeCombination=new SwipeCombination(pointList);
 
         makeAxisLabels(this,maxFiber,maxProtein,size);
 
-        for(int i=0; i<pointNumber;i++) {
-            addContentView(toImageButton(pointList[i],this,unitx,unity,mainCombination,swipeCombination), new ViewGroup.LayoutParams(50, 50));
+        for(Meal meal: pointList) {
+            addContentView(toImageButton(meal,this,unitx,unity,mainCombination,swipeCombination), new ViewGroup.LayoutParams(50, 50));
         }
 
         ImageButton comb=new ImageButton(this);
         comb.setBackgroundResource(R.drawable.point);
         comb.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                ArrayList<information.MenuItem> list=new ArrayList<information.MenuItem>();
+                ArrayList<Meal> pList=swipeCombination.getList();
+                for(Meal meal: pList){
+                    list.add(new information.MenuItem(meal));
+                }
                 Intent intent = new Intent(v.getContext(), DetailActivity.class);
                 intent.putExtra("Meal",mainCombination.toString());
+                intent.putExtra("MealList",list);
                 startActivity(intent);
             }
         });
@@ -141,7 +158,13 @@ public class MainActivity extends ActionBarActivity {
         add.setTranslationY(size.y - 400);
         add.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                ArrayList<information.MenuItem> list=new ArrayList<information.MenuItem>();
+                ArrayList<Meal> pList=swipeCombination.getList();
+                for(Meal meal: pList){
+                    list.add(new information.MenuItem(meal));
+                }
                 Intent intent = new Intent(v.getContext(), RestaurantChoices.class);
+                intent.putExtra("MealList",list);
                 startActivity(intent);
             }
         });
@@ -158,7 +181,7 @@ public class MainActivity extends ActionBarActivity {
                     mealCombination.setCombine();
                     if(swipeCombination.getSwiping()){
                         swipeCombination.unsetSwiping();
-                        swipeCombination.finalize();
+                        swipeCombination.finalizeSwipe();
                         mealCombination.update();
                     }
                 }
@@ -174,7 +197,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 if(swipeCombination.getSwiping()){
                     swipeCombination.unsetSwiping();
-                    swipeCombination.finalize();
+                    swipeCombination.finalizeSwipe();
                     mealCombination.update();
                 }else{
                     swipeCombination.setSwiping();
@@ -194,7 +217,7 @@ public class MainActivity extends ActionBarActivity {
 
     public ImageButton toImageButton(final Meal meal, Context context,float ux, float uy,final MealCombination mealCombination, final SwipeCombination swipeCombination){
         ImageButton ib=new ImageButton(context);
-        float posx=0,posy=0;
+        float posx,posy;
 
         ib.setBackgroundResource(R.drawable.point);
         posx=(meal.getProtein() / (meal.getCalories())) * uy * 100;
@@ -222,9 +245,14 @@ public class MainActivity extends ActionBarActivity {
                             v.setBackgroundResource(R.drawable.point);
                         }
                     } else {
+                        ArrayList<information.MenuItem> list=new ArrayList<information.MenuItem>();
+                        ArrayList<Meal> pList=swipeCombination.getList();
+                        for(Meal meal: pList){
+                            list.add(new information.MenuItem(meal));
+                        }
                         Intent intent = new Intent(v.getContext(), DetailActivity.class);
                         intent.putExtra("Meal",meal.toString());
-
+                        intent.putExtra("MealList",list);
                         startActivity(intent);
                     }
                 }

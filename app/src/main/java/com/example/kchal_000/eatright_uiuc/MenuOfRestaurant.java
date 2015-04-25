@@ -40,19 +40,18 @@ public class MenuOfRestaurant extends ActionBarActivity implements
     private ArrayList<MenuItem> chosenItems = new ArrayList<MenuItem>();
     private HashMap<CalorieCategory, HashMap<information.MenuItem, List<String>>> allData;
     private MenuProvider mp;
-    private DataProvider dp = new DataProvider();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent restIntent = getIntent();
         RestaurantInfo rInfo = (RestaurantInfo)restIntent.getSerializableExtra("rest");
+        chosenItems=(ArrayList<MenuItem>)restIntent.getSerializableExtra("MealList");
         //need to use RestaurantInfo to create a data struct to give to contentView
-        //mp = apiInterface.getMenu(rInfo);
-        mp = new MenuProvider(dp.getMenuItems());
-        //Log.i("json to parse ", ""+apiInterface.getMenu(rInfo));
+        mp = apiInterface.getMenu(rInfo);
+        //Log.i("json to parse ", apiInterface.getMenu(rInfo).toString());
         //set up content view
         this.allData = mp.getMenu();
-        //this.allData = dp.getData();
+        //this.allData = DataProvider.getData();
         setContentView(R.layout.activity_menu_of_restaurant);
         expt = (ExpandableListView) findViewById(R.id.expandableListView);
         expt.setAdapter(new FirstLevelAdapter(this, this.allData));
@@ -71,13 +70,23 @@ public class MenuOfRestaurant extends ActionBarActivity implements
         pushToViz.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), MainActivity.class);
-                //chosenItems.addAll(mp.getCheckedItems());
-                //chosenItems = dp.getCheckedItems();
+                ArrayList<MenuItem> newChosenItems = mp.getCheckedItems();
 
+                if(chosenItems==null){
+                    chosenItems=newChosenItems;
+                }else {
+                    if (newChosenItems != null) {
+                        for (MenuItem MI : newChosenItems) {
+                            if (!chosenItems.contains(MI)) {
+                                chosenItems.add(MI);
+                            }
+                        }
+                    }
+                }
 
                 Log.i("chosenItemsTopass ", ""+chosenItems.size());
-                Log.i("chosenItems ", ""+chosenItems.get(0));
-                myIntent.putExtra("choices", chosenItems);
+                //Log.i("chosenItems ", ""+chosenItems.get(0));
+                myIntent.putExtra("MealList", chosenItems);
                 startActivityForResult(myIntent, 0);
             }
 
@@ -102,48 +111,34 @@ public class MenuOfRestaurant extends ActionBarActivity implements
         if(buttonView.getTag() instanceof CalorieCategory){
             CalorieCategory key = (CalorieCategory) buttonView.getTag();
             key.setSelected(!key.isSelected()); //toggle
-            //ArrayList<MenuItem> items = mp.getCategory(key);   // <---------------uncomment
-            Log.i("chosen is true ", ""+key.isSelected()+"");
+            ArrayList<MenuItem> items = mp.getCategory(key);   // <---------------uncomment
             HashMap<MenuItem, List<String>> test = allData.get(key);
             //Set<MenuItem> items = test.keySet();   testing alternative to items ArrayList
-            Object[] keys = test.keySet().toArray();
-            ArrayList<MenuItem> items = new ArrayList<MenuItem>();
-            for(Object k : keys){
-                items.add((MenuItem)k);
-            }
-            Log.i("getCat", items.size()+"");
+
             CharSequence txt = "Nearby!"+key.getName();
             Toast tst = Toast.makeText(ctxt, txt, Toast.LENGTH_LONG);
             tst.show();
             if(key.isSelected()) {
                 for (MenuItem i : items) {
                     i.setSelected(true);
-                    chosenItems.add(i);
-                    buttonView.invalidate();
                 }
             }else{
                 for(MenuItem i : items){
                     i.setSelected(false);
-                    chosenItems.remove(i);
                 }
             }
 
-
         }else if(buttonView.getTag() instanceof information.MenuItem){
             MenuItem key = (information.MenuItem) buttonView.getTag();
-            Log.i("selected?", " "+key.isSelected());
-            //HashMap<MenuItem, List<String>> categItems = allData.get(key);
+            HashMap<MenuItem, List<String>> categItems = allData.get(key);
             key.setSelected(!key.isSelected()); //toggle
-            Log.i("selected?", " "+key.isSelected());
             if(key.isSelected()){
                 if(!chosenItems.contains(key)){
-                    Log.i("reached", "added");
                     chosenItems.add(key);
                 }
             }else{
                 if(chosenItems.contains(key)){
                     chosenItems.remove(key);
-                    Log.i("reached", "added");
                 }
             }
             CharSequence txt = "No y!"+key.getName();
@@ -151,7 +146,13 @@ public class MenuOfRestaurant extends ActionBarActivity implements
             //Log.i("chosenItemsTopass ", ""+chosenItems.size());
             //Log.i("chosenItems ", ""+chosenItems.get(0));
             tst.show();
+        }else{
+            //toast something went terribly wrong
+            //CharSequence txt = "Something went terribly wrong!";
+            //Toast tst = Toast.makeText(ctxt, txt, Toast.LENGTH_LONG);
+            //tst.show();
         }
+        //expt.getSelectedItemId();
 
     }
 }
