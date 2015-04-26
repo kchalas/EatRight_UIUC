@@ -18,6 +18,7 @@ import information.MenuItem;
 
 /**
  * Created by kchal_000 on 3/18/2015.
+ * Adapter for top level of ExpandableListView
  */
 public class FirstLevelAdapter extends BaseExpandableListAdapter{
     Context context;
@@ -27,7 +28,6 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
     public FirstLevelAdapter(Context context, HashMap<CalorieCategory, HashMap<MenuItem, List<String>>> data){
         this.context = context;
         this.allData = data;
-        Log.i("hashmap", ""+allData.isEmpty());
         listGroup = allData.keySet().toArray();
     }
     @Override
@@ -69,25 +69,19 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        //get group item at this position and find its name
         CalorieCategory categ = (CalorieCategory)getGroup(groupPosition);
         String str = categ.getName();
-        CheckBox boxP;
-        //GroupViewHolder holder;
+
         if(convertView == null){
+            //Inflate layout to include more than just text
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.meals_list,null); //resource, viewgroup
-            boxP = (CheckBox)convertView.findViewById(R.id.checkbox);
-            boxP.setOnCheckedChangeListener((MenuOfRestaurant)this.context);
-            boxP.setChecked(categ.isSelected());
-            //holder = new GroupViewHolder();
-            //holder.tv = (TextView) convertView.findViewById(R.id.mealname);
-            //holder.check = (CheckBox) convertView.findViewById(R.id.checkboxchild);
-            //convertView.setTag(holder);
-        } //else{ holder = (GroupViewHolder) convertView.getTag();}
-        //holder.tv.setText(str);
+            convertView = inflater.inflate(R.layout.meals_list,null);
+        }
+        //fill text box and checkbox correctly, check for changes with listener
         TextView tv = (TextView) convertView.findViewById(R.id.parentname);
         tv.setText(str);
-        boxP = (CheckBox)convertView.findViewById(R.id.checkbox);
+        CheckBox boxP = (CheckBox)convertView.findViewById(R.id.checkbox);
         boxP.setOnCheckedChangeListener((MenuOfRestaurant)this.context);
         boxP.setChecked(categ.isSelected());
         boxP.setTag(categ);
@@ -96,26 +90,15 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        /**
-        String str = (String)getChild(groupPosition, childPosition);
-        TextView tv = new TextView(context);
-        tv.setText(str);
-        tv.setPadding(50, 0, 0, 0);
-
-        **/
+        //custom expandable list view
         CustExpListView nxtList = new CustExpListView(this.context);
         //need list to be the keySet, and to send along the hash
         HashMap<MenuItem, List<String>> chP = allData.get(listGroup[groupPosition]);
         Object[] keys = chP.keySet().toArray();
-        //String keyStr= keys[childPosition].toString();
-        //Log.i("keystr", keyStr);
-        //Log.i("hash size", chP.size()+"");
         nxtList.setAdapter(new SecondLevelAdapter(this.context,  childPosition, chP));
         convertView = nxtList;
-        //convertView.setPadding(20, 0, 0, 0);
         notifyDataSetChanged();
         return convertView;
-        //return tv;
     }
 
     @Override

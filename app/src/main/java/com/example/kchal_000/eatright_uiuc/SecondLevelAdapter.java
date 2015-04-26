@@ -29,7 +29,6 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
         this.context = context;
         this.chosen = chosen;
         Object[] meals =  matchMealToDets.keySet().toArray();
-        //MenuItem ml = meals[chosen].toString();
         MenuItem[] ms = new MenuItem[meals.length];
         for(int i = 0; i < meals.length; i++){
             ms[i] = (MenuItem) meals[i];
@@ -56,14 +55,11 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
 
     @Override
     public Object getGroup(int groupPosition) {
-        //Log.i("meals - getGroup", meals[groupPosition].toString());
         return this.meal;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        Log.i("chosen", chosen+" "+ getGroup(chosen));
-        //Log.i("list size", ""+list.size());
         return this.details.get(childPosition);
     }
 
@@ -84,33 +80,20 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        //GroupViewHolder holder;
+
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.second_level_meals_list,null);
+        }
 
-            //holder = new GroupViewHolder();
-            //holder.tv = (TextView) convertView.findViewById(R.id.parentname);
-            //holder.check = (CheckBox) convertView.findViewById(R.id.checkbox);
-            //convertView.setTag(holder);
-        }//else{holder = (GroupViewHolder) convertView.getTag();}
-
-
+        //fill in text boxes for one of the child meals from parent
         String str = this.meal;
-        //holder.tv.setText(str);
         TextView tvTitle = (TextView)convertView.findViewById(R.id.mealname);
         tvTitle.setText(str);
         CheckBox box = (CheckBox)convertView.findViewById(R.id.checkboxchild);
         box.setOnCheckedChangeListener((MenuOfRestaurant)this.context);
         box.setChecked(this.mealitem.isSelected());
         box.setTag(this.mealitem);
-        //box.setId();
-        //if(box.hasOnClickListeners())
-        //TextView tv = new TextView(this.context);
-        //tv.setPadding(70, 0, 0, 0);
-        //Log.i("setting txt", str);
-
-       // tv.setText(str);
         return convertView;
     }
 
