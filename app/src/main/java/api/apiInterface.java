@@ -55,7 +55,7 @@ public class apiInterface {
         if(itemList == null) {
             return new MenuProvider(new ArrayList<MenuItem>());
         }
-
+        Log.i("menu items", ""+itemList);
         return new MenuProvider(itemList);
     }
 

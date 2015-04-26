@@ -1,5 +1,6 @@
 package api;
 
+import android.util.Log;
 import android.view.Menu;
 
 import com.example.kchal_000.eatright_uiuc.DataProvider;
@@ -30,8 +31,9 @@ public class MenuProvider {
 
         //List of details - List<String>
         for(MenuItem item : menuList){
-            NutritionInfo itemInfo = apiInterface.getNutritionInfo(item);
 
+            NutritionInfo itemInfo = apiInterface.getNutritionInfo(item);
+            Log.i("nutrition", ""+itemInfo);
             if(itemInfo != null) {
                 List<String> itemInfoList = new ArrayList<>();
                 itemInfoList.add(item.getName());
@@ -40,7 +42,7 @@ public class MenuProvider {
                 itemInfoList.add(Double.toString(itemInfo.getFiber()));
                 itemInfoList.add(Double.toString(itemInfo.getProtein()));
 
-
+                item.setNutritionInfo(itemInfo);
                 if (itemInfo.getCalories() < 250) {
                     small.put(item, itemInfoList);
                 } else if (itemInfo.getCalories() >= 250 && itemInfo.getCalories() < 500) {
