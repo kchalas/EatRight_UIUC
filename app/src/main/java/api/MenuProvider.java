@@ -40,7 +40,7 @@ public class MenuProvider {
                 itemInfoList.add(Double.toString(itemInfo.getFiber()));
                 itemInfoList.add(Double.toString(itemInfo.getProtein()));
 
-
+                item.setNutritionInfo(itemInfo);
                 if (itemInfo.getCalories() < 250) {
                     small.put(item, itemInfoList);
                 } else if (itemInfo.getCalories() >= 250 && itemInfo.getCalories() < 500) {
