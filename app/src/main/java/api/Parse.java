@@ -47,6 +47,14 @@ public class Parse {
 
                 restList.add(entry);
             }
+
+            RestaurantInfo entry=new RestaurantInfo();
+            entry.setAddress("1605 S Neil St, Champaign, IL 61820");
+            entry.setName("McDonald's");
+            entry.setLat(40.097508);
+            entry.setLon(-88.245253);
+            restList.add(entry);
+
             return restList;
         }catch(JSONException e){
             Log.e("error", e.toString());
