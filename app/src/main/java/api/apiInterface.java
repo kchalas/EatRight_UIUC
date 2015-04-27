@@ -27,12 +27,13 @@ public class apiInterface {
             Log.e("error", e.toString());
         }
 
+
         return Parse.parseRestaurants(jsonData, lat, lon);
     }
 
+
     public static MenuProvider getMenu(RestaurantInfo restaurant){
         LocuAPI apiTask = new LocuAPI();
-
         String jsonData = "";
         try {
             jsonData = apiTask.execute(restaurant).get();

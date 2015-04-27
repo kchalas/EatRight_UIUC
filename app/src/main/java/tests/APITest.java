@@ -14,7 +14,7 @@ import information.MenuItem;
 import information.NutritionInfo;
 import information.RestaurantInfo;
 
-public class APITest extends InstrumentationTestCase{
+public class APITest extends InstrumentationTestCase {
     public void testYelpAPI() throws Exception{
         ArrayList<RestaurantInfo> restaurantList = apiInterface.getRestaurants(40.11000, -88.22700);
 
