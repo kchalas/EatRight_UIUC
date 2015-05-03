@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.ImageButton;
 import android.view.View;
+import android.widget.ImageView;
 
 import information.MenuItem;
 import information.NutritionInfo;
@@ -16,15 +17,18 @@ public class Meal {
     float fiber = 0;          //x position of the point
     float protein = 0;          //y position of the point
     float calories = 0;
+    int size=0;
     String id = "";
     String source="";
     ImageButton ib;
+    ImageView iv;
 
     public Meal(float f, float p, float c, String s) {
         protein = p;
         fiber = f;
         calories = c;
         id = s;
+        sizeFromCal();
     }
 
     public Meal(MenuItem item){
@@ -42,10 +46,12 @@ public class Meal {
             protein=1;
             calories=1;
         }
+        sizeFromCal();
     }
 
     public Meal(String string){
-     fromString(string);
+        fromString(string);
+        sizeFromCal();
     }
 
     public float getFiber() {
@@ -82,4 +88,18 @@ public class Meal {
 
     public void setImageButton(ImageButton imageButton){ ib=imageButton;}
     public ImageButton getImageButton(){return ib;}
+
+    public void setImageView(ImageView imageView){ iv=imageView;}
+    public ImageView getImageView(){return iv;}
+
+    void sizeFromCal(){
+        int change= (int) (0.08*(calories%250));
+        switch((int)calories/250){
+            case 0: size=40+change; break; //low cal
+            case 1: size=60+change; break; //med cal
+            case 2: size=80+change; break; //high cal
+            default: size=110; break;//very high cal
+        }
+    }
+    public int getSize(){return size;}
 }

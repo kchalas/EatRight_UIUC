@@ -46,15 +46,20 @@ public class SwipeCombination {
                 if(!viewList.contains(meal.getImageButton())){
                     newMealList.add(meal);
                     newList.add(meal.getImageButton());
+                }else{
+                    meal.getImageButton().setClickable(false);
+                    meal.getImageButton().setVisibility(View.INVISIBLE);
+                    meal.getImageView().setClickable(false);
+                    meal.getImageView().setVisibility(View.INVISIBLE);
                 }
             }
 
-            for (View ib : viewList) {
+            /*for (View ib : viewList) {
                 if(!newList.contains(ib)){
                 ib.setClickable(false);
                 ib.setVisibility(View.INVISIBLE);
                 }
-            }
+            }*/
 
             mealList = newMealList;
         }

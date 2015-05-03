@@ -1,6 +1,7 @@
 package com.example.kchal_000.eatright_uiuc;
 
 import android.media.Image;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class MealCombination {
     float protein = 0;          //y position of the point
     float calories = 0;
     float unitx, unity;
+    int size=40;
     ImageButton combine;
     ImageButton ib;
     boolean isCombining=false;
@@ -24,6 +26,15 @@ public class MealCombination {
         protein=p;
         calories=c;
         mealList.add(m);
+        sizeFromCal();
+    }
+
+    public MealCombination(Meal m) {
+        fiber=m.getFiber();
+        protein=m.getProtein();
+        calories=m.getCalories();
+        mealList.add(m);
+        sizeFromCal();
     }
 
     public MealCombination(){
@@ -58,9 +69,13 @@ public class MealCombination {
         }
         posx=(protein / calories) * unity * 100;
         posy=(fiber / (calories/500)) * unitx;
-        combine.setTranslationX(posx-37.5f);
-        combine.setTranslationY(posy-37.5f);
-
+        sizeFromCal();
+        ViewGroup.LayoutParams params = combine.getLayoutParams();
+        params.height=size;
+        params.width=size;
+        combine.setLayoutParams(params);
+        combine.setTranslationX(posx-(size/2));
+        combine.setTranslationY(posy - (size / 2));
     }
 
     public void addMeal(Meal meal){
@@ -133,4 +148,15 @@ public class MealCombination {
         fiber=Float.valueOf(data[1]);
         protein=Float.valueOf(data[2]);
     }
+
+    void sizeFromCal(){
+        int change= (int) (0.08*(calories%250));
+        switch((int)calories/250){
+            case 0: size=40+change; break; //low cal
+            case 1: size=60+change; break; //med cal
+            case 2: size=80+change; break; //high cal
+            default: size=110; break;//very high cal
+        }
+    }
+    public int getSize(){return size;}
 }

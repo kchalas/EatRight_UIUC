@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -63,7 +64,8 @@ public class MainActivity extends ActionBarActivity {
         makeAxisLabels(this,maxFiber,maxProtein,size);
 
         for(Meal meal: pointList) {
-            addContentView(toImageButton(meal,this,unitx,unity,mainCombination,swipeCombination), new ViewGroup.LayoutParams(50, 50));
+            addContentView(toImageButton(meal,this,unitx,unity,mainCombination,swipeCombination, size), new ViewGroup.LayoutParams(meal.getSize(), meal.getSize()));
+            addContentView(toImageView(meal,this,unitx,unity,size),new ViewGroup.LayoutParams(meal.getSize(),meal.getSize()));
         }
 
         ImageButton comb=new ImageButton(this);
@@ -84,7 +86,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         mainCombination.setImageButton(comb,unitx, unity);
-        addContentView(mainCombination.getImageButton(), new ViewGroup.LayoutParams(75, 75));
+        addContentView(mainCombination.getImageButton(), new ViewGroup.LayoutParams(mainCombination.getSize(), mainCombination.getSize()));
         userInterface(this,size,mainCombination,swipeCombination);
     }
 
@@ -215,23 +217,25 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    public ImageButton toImageButton(final Meal meal, Context context,float ux, float uy,final MealCombination mealCombination, final SwipeCombination swipeCombination){
+    public ImageButton toImageButton(final Meal meal, Context context,float ux, float uy,final MealCombination mealCombination, final SwipeCombination swipeCombination, Point size){
         ImageButton ib=new ImageButton(context);
         float posx,posy;
 
-        ib.setBackgroundResource(R.drawable.point);
+        ib.setBackgroundResource(R.drawable.pointout);
         posx=(meal.getProtein() / (meal.getCalories())) * uy * 100;
+        if(posx>size.x){posx=size.x;}
         posy=(meal.getFiber() / (meal.getCalories()/500)) * ux;
-        ib.setTranslationX(posx-25);
-        ib.setTranslationY(posy-25);
+        if(posy>size.y){posy=size.y;}
+        ib.setTranslationX(posx-(meal.getSize()/2));
+        ib.setTranslationY(posy-(meal.getSize()/2));
         ib.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(mealCombination.getCombine() ){
                     mealCombination.addDropMeal(meal);
                     if (mealCombination.isCombined(meal)) {
-                        v.setBackgroundResource(R.drawable.pointcombination);
+                        v.setBackgroundResource(R.drawable.pointoutcomb);
                     } else {
-                        v.setBackgroundResource(R.drawable.point);
+                        v.setBackgroundResource(R.drawable.pointout);
                     }
                 } else {
                     if(swipeCombination.getSwiping()){
@@ -240,9 +244,9 @@ public class MainActivity extends ActionBarActivity {
                             mealCombination.addDropMeal(meal);
                         }
                         if (swipeCombination.isSwiped(meal)) {
-                            v.setBackgroundResource(R.drawable.pointswiping);
+                            v.setBackgroundResource(R.drawable.pointoutswipe);
                         } else {
-                            v.setBackgroundResource(R.drawable.point);
+                            v.setBackgroundResource(R.drawable.pointout);
                         }
                     } else {
                         ArrayList<information.MenuItem> list=new ArrayList<information.MenuItem>();
@@ -263,6 +267,30 @@ public class MainActivity extends ActionBarActivity {
         return ib;
     }
 
+    public ImageView toImageView(Meal meal, Context context, float ux, float uy, Point size){
+        ImageView iv=new ImageView(context);
+        float posx,posy;
+
+        iv.setBackgroundResource(drawFromCal(meal.getCalories()));
+        posx=(meal.getProtein() / (meal.getCalories())) * uy * 100;
+        if(posx>size.x){posx=size.x;}
+        posy=(meal.getFiber() / (meal.getCalories()/500)) * ux;
+        if(posy>size.y){posy=size.y;}
+        iv.setTranslationX(posx-(meal.getSize()/2));
+        iv.setTranslationY(posy-(meal.getSize()/2));
+        meal.setImageView(iv);
+
+        return iv;
+    }
+
+    public int drawFromCal(float calories){
+        switch((int)calories/250){
+            case 0: return R.drawable.pointinlow; //low cal
+            case 1: return R.drawable.pointinmed; //med cal
+            case 2: return R.drawable.pointinhigh; //high cal
+            default: return R.drawable.pointinhigh;//very high cal
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
