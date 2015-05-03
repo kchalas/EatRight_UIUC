@@ -23,6 +23,7 @@ public class YelpAPI extends AsyncTask<Double, Void, String> {
         OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.yelp.com/v2/search");
 
         request.addQuerystringParameter("term", "food");
+        request.addQuerystringParameter("category_filter", "hotdogs");
         request.addQuerystringParameter("ll", coords[0] + "," + coords[1]);
         request.addQuerystringParameter("limit", "18");
 
