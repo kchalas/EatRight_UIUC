@@ -69,7 +69,7 @@ public class SwipeCombination {
 
     public void setSwiping(){
         swiping=true;
-        //ib.setBackgroundResource(R.drawable.swipetoggle);
+        ib.setBackgroundResource(R.drawable.swipetoggle);
     }
     public void unsetSwiping(){
         swiping=false;
