@@ -48,12 +48,7 @@ public class Parse {
                 restList.add(entry);
             }
 
-            RestaurantInfo entry=new RestaurantInfo();
-            entry.setAddress("1605 S Neil St, Champaign, IL 61820");
-            entry.setName("McDonald's");
-            entry.setLat(40.097508);
-            entry.setLon(-88.245253);
-            restList.add(entry);
+
 
             return restList;
         }catch(JSONException e){
@@ -66,25 +61,37 @@ public class Parse {
     public static ArrayList<MenuItem> parseMenu(String jsonData){
         try {
             ArrayList<MenuItem>  menuList = new ArrayList<MenuItem> ();
-
+            MenuItem entry;
             JSONObject obj = new JSONObject(jsonData);
             JSONArray venues = obj.getJSONArray("venues");
-            System.out.println(jsonData);
+            System.out.println(venues.toString());
             for (int l = 0;l<venues.length();l++) {
-                if(venues.getJSONObject(l).isNull("menu_items")){
+
+                if(venues.getJSONObject(l).isNull("menus")){
                     continue;
-                }
-                JSONArray menus = venues.getJSONObject(l).getJSONArray("menu_items");
-                Log.i("menu",menus.toString());
+                }JSONArray menus = venues.getJSONObject(l).getJSONArray("menus");
+
                 for (int z = 0; z < menus.length(); z++) {
-                    MenuItem entry= new MenuItem();
-                    String name = menus.getJSONObject(z).get("name").toString();
-                    Log.i("menu",name);
-                    entry.setName(name);
-                    menuList.add(entry);
+                  JSONArray sections = menus.getJSONObject(z).getJSONArray("sections");
+
+                    for (int i = 0; i < sections.length(); i++) {
+                            JSONArray subsections = sections.getJSONObject(i).getJSONArray("subsections");
+
+                            for (int j = 0; j < subsections.length(); j++) {
+                                    JSONArray contents = subsections.getJSONObject(j).getJSONArray("contents");
+                                    for (int k = 0; k < contents.length(); k++) {
+                                            entry = new MenuItem();
+                                            String name = contents.getJSONObject(k).get("name").toString();
+                                            entry.setName(name);
+                                            menuList.add(entry);
+                                    }
+                            }
+
+                     }
+
                 }
             }
-            return menuList;
+                return menuList;
         }
         catch(JSONException e){
             Log.e("error", e.toString());

@@ -52,7 +52,7 @@ public class MenuOfRestaurant extends ActionBarActivity implements
         }
         //need to use RestaurantInfo to create a data struct to give to contentView
         mp = apiInterface.getMenu(rInfo);
-        mp = new MenuProvider(dp.getMenuItems());
+        //mp = new MenuProvider(dp.getMenuItems());
         //set up content view
         this.allData = mp.getMenu();
         setContentView(R.layout.activity_menu_of_restaurant);

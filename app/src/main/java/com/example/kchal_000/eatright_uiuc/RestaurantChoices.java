@@ -43,9 +43,13 @@ public class RestaurantChoices extends ActionBarActivity {
         ArrayList<Button> buttons = new ArrayList<Button>();
         String[] otherPallette = {"#78D5E3", "#7AF5F5", "#34DDDD", "#93E2D5"};
         String[] array = {"#6CCECB", "#F9E559", "#EF7126" ,"#8EDC9D"};
-        //double[] location = getLocation(); //lat , long
+        double[] location = getLocation(); //lat , long
         //ArrayList<RestaurantInfo> temp = apiInterface.getRestaurants(40.11000, -88.22700);
-        ArrayList<RestaurantInfo> temp = apiInterface.getRestaurants(40.113515, -88.225084);
+
+        ArrayList<RestaurantInfo> temp = apiInterface.getRestaurants(location[0], location[1]);
+        //ArrayList<RestaurantInfo> temp = apiInterface.getRestaurants(40.113515, -88.225084);
+
+
         Intent restIntent = getIntent();
         final ArrayList<information.MenuItem> chosenItems = (ArrayList<information.MenuItem>)restIntent.getSerializableExtra("MealList");
 
