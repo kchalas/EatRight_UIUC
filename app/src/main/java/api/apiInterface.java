@@ -27,7 +27,7 @@ public class apiInterface {
             Log.e("error", e.toString());
         }
 
-
+        Log.v("yelpOut", jsonData);
         return Parse.parseRestaurants(jsonData, lat, lon);
     }
 
