@@ -28,35 +28,37 @@ import information.RestaurantInfo;
 
 
 public class RestaurantChoices extends ActionBarActivity {
-
+    //hashmap of restaurants
     private HashMap<String, RestaurantInfo> rests = new HashMap<String, RestaurantInfo>();
 
+    /**
+     * Dynamic buttons and dynamic view, both populated
+     * with Yelp API info based on geographic location of the
+     * user.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //dynamic view
         ScrollView sv = new ScrollView(this);
-        //sv.setBackgroundColor(Color.parseColor("#218C8D"));
         sv.setBackgroundColor(Color.parseColor("#BED661"));
         LinearLayout ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.VERTICAL);
         sv.addView(ll);
+        //create an array of buttons
         ArrayList<Button> buttons = new ArrayList<Button>();
+        //cool color pallette to reduce eating
         String[] otherPallette = {"#78D5E3", "#7AF5F5", "#34DDDD", "#93E2D5"};
         String[] array = {"#6CCECB", "#F9E559", "#EF7126" ,"#8EDC9D"};
         double[] location = getLocation(); //lat , long
-
-        //ArrayList<RestaurantInfo> temp = apiInterface.getRestaurants(40.11000, -88.22700);
-
         ArrayList<RestaurantInfo> temp = apiInterface.getRestaurants(location[0], location[1]);
-        //ArrayList<RestaurantInfo> temp = apiInterface.getRestaurants(40.113515, -88.225084);
-
-
+        //pass along data if anything in visualization
         Intent restIntent = getIntent();
         final ArrayList<information.MenuItem> chosenItems = (ArrayList<information.MenuItem>)restIntent.getSerializableExtra("MealList");
-
+        //populate list with all found restaurants.
         if(temp!=null ) {
             if(!temp.isEmpty()) {
-                //Log.i("temp element", temp.get(0).toString());
                 for (RestaurantInfo e : temp) {
                     rests.put(e.getName(), e);
                 }
@@ -65,7 +67,7 @@ public class RestaurantChoices extends ActionBarActivity {
 
         if(rests != null) {
             if(!rests.isEmpty()) {
-                //create layout
+                //create layout and dynamic buttons
                 for (int i = 0; i < rests.size(); i++) {
                     final Button button = new Button(this);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -110,6 +112,7 @@ public class RestaurantChoices extends ActionBarActivity {
         refresh.setPadding(40, 40, 40, 40);
         refresh.setBackgroundColor(Color.parseColor("#89E894"));
         ll.addView(refresh);
+        //move to the next screen to get the menus
         refresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), RestaurantChoices.class);
@@ -121,34 +124,12 @@ public class RestaurantChoices extends ActionBarActivity {
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_restaurant__choices, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     /**
      * Location code from
      * http://stackoverflow.com
-     * /questions/2227292/how-to-get-latitude-and-longitude-
-     * of-the-mobiledevice-in-android
+     * /questions/2227292/how-to-get-latitude-and-longitude-of-the-mobiledevice-in-android
+     * Just in case a location isn't found, provide that of Champaign Urbana
+     * @return
      */
     public double[] getLocation() {
         double longitude;

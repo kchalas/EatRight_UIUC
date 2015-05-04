@@ -2,28 +2,36 @@ package com.example.kchal_000.eatright_uiuc;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import api.MenuProvider;
+import api.apiInterface;
 import information.CalorieCategory;
-import information.MenuItem;
 import information.RestaurantInfo;
+import information.MenuItem;
 
 import static android.widget.CompoundButton.OnCheckedChangeListener;
 
-/*
-   Helped along with details from :
-   http://androidcodesnips.blogspot.com/2011/09/three-level-expandable-list.html
+/**
+ * Helped along with details from :
+ * http://androidcodesnips.blogspot.com/2011/09/three-level-expandable-list.html
  */
 
 public class MenuOfRestaurant extends ActionBarActivity implements
@@ -33,6 +41,14 @@ public class MenuOfRestaurant extends ActionBarActivity implements
     private HashMap<CalorieCategory, HashMap<information.MenuItem, List<String>>> allData;
     private MenuProvider mp;
     private DataProvider dp = new DataProvider();
+
+    /**
+     * The method this savedInstance state is used in is called
+     * when the activity is first created, which happens on turning
+     * on the app. Creates a view and maps restaurant menu data to
+     * expandable lists based on adapters.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +59,8 @@ public class MenuOfRestaurant extends ActionBarActivity implements
             chosenItems = new ArrayList<MenuItem>();
         }
         //need to use RestaurantInfo to create a data struct to give to contentView
-        //mp = apiInterface.getMenu(rInfo);
-        mp = new MenuProvider(dp.getMenuItems());
+        mp = apiInterface.getMenu(rInfo);
+
         //set up content view
         this.allData = mp.getMenu();
         setContentView(R.layout.activity_menu_of_restaurant);
@@ -79,7 +95,12 @@ public class MenuOfRestaurant extends ActionBarActivity implements
         return true;
     }
 
-
+    /**
+     * The onCheckedChange method controls checkboxes and ensures the correct data
+     * is passed along to the visualization. All chosen items are passed in arrays
+     * @param buttonView
+     * @param isChecked
+     */
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         Context ctxt = getApplicationContext();
