@@ -2,30 +2,22 @@ package com.example.kchal_000.eatright_uiuc;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import api.MenuProvider;
-import api.apiInterface;
 import information.CalorieCategory;
-import information.RestaurantInfo;
 import information.MenuItem;
+import information.RestaurantInfo;
 
 import static android.widget.CompoundButton.OnCheckedChangeListener;
 
@@ -51,8 +43,8 @@ public class MenuOfRestaurant extends ActionBarActivity implements
             chosenItems = new ArrayList<MenuItem>();
         }
         //need to use RestaurantInfo to create a data struct to give to contentView
-        mp = apiInterface.getMenu(rInfo);
-        //mp = new MenuProvider(dp.getMenuItems());
+        //mp = apiInterface.getMenu(rInfo);
+        mp = new MenuProvider(dp.getMenuItems());
         //set up content view
         this.allData = mp.getMenu();
         setContentView(R.layout.activity_menu_of_restaurant);
