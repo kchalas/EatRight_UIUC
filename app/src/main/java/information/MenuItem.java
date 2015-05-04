@@ -12,6 +12,11 @@ public class MenuItem implements Serializable {
 
     public MenuItem(){}
 
+    /**
+     * Hold the details of meals and allow for meals to be chosen.
+     * Know whether an individual meal has been selected with a checkbox.
+     * @param string
+     */
     public MenuItem(String string){
         String[] strings = string.split("`");
 

@@ -12,6 +12,12 @@ public class RestaurantInfo implements Serializable {
 
     public RestaurantInfo(){}
 
+    /**
+     * Associated with Yelp results and hold info about a
+     * restaurant. Makes for good OOO programming and organization.
+     * Mainly just getters and setters.
+     * @param string
+     */
     public RestaurantInfo(String string){
         String[] strings = string.split("`");
 

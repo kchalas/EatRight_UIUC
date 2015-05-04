@@ -12,6 +12,14 @@ public class CalorieCategory {
     private boolean isSelected;
     //private ArrayList<MenuItem> menu;
 
+    /**
+     * Special Class had to be created specially for the calorie
+     * counts because of checkboxes. Selection only works when you can
+     * keep track of what is being chosen. Mostly, it's just getters and setters.
+     * @param name
+     * @param max
+     * @param min
+     */
     public CalorieCategory(String name, int max, int min){
         this.name = name;
         this.maxCal = max;
@@ -52,16 +60,6 @@ public class CalorieCategory {
     }
 
     public boolean inRange(int value){ return ((value >= this.minCal) &&( value <= this.maxCal));}
-    /**
-    public void setMenu(ArrayList<MenuItem> menu){ this.menu = menu;}
-
-
-    public void toggleMenu(){
-        //a toggle
-        for(MenuItem m : menu){
-            m.setSelected(!m.isSelected());
-        }
-    }**/
 
     @Override
     public int hashCode(){

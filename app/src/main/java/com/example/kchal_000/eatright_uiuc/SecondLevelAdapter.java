@@ -78,10 +78,20 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
         return true;
     }
 
+    /**
+     * The getGroupView defines how each of the children from the top level will display.
+     * Layouts again have to be inflated to make room for the checkbox.
+     * @param groupPosition
+     * @param isExpanded
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
         if(convertView == null){
+            //inflate view to make room for a checkbox.
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.second_level_meals_list,null);
         }
@@ -97,6 +107,16 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter{
         return convertView;
     }
 
+    /**
+     * Each child is a line from the string list, so every String must display
+     * the nutrition info of meals and expand correctly.
+     * @param groupPosition
+     * @param childPosition
+     * @param isLastChild
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         String str = (String)getChild(groupPosition, childPosition);

@@ -12,6 +12,12 @@ public class NutritionInfo implements Serializable{
 
     public NutritionInfo(){}
 
+    /**
+     * Nutrition info is a simple class that just lists the information
+     * about meals. Compact and specialized, associated with Wolfram calls
+     * and allows all data to be in one place for a meal. Mainly, OOO
+     * @param string
+     */
     public NutritionInfo(String string){
         String[] strings = string.split("`");
 

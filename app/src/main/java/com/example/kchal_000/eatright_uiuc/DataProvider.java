@@ -16,6 +16,14 @@ import information.MenuItem;
 public class DataProvider {
     public HashMap<CalorieCategory, HashMap<MenuItem, List<String>>> categories =
             new HashMap<CalorieCategory, HashMap<MenuItem, List<String>>>();
+
+    /**
+     * Testing class to prove that the application works, without relying on the
+     * highly error prone LocuAPI. We used Locu because Yelp apparently utilizes their
+     * API, but we've had little luck with getting standardized results to parse. JSONs
+     * are a mess from Locu, so this was a manual testing class we left in to show how
+     * data should be formatted and as a proof of concept.
+     */
     public DataProvider(){
         //empty constructor
     }

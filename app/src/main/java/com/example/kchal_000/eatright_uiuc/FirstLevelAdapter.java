@@ -67,6 +67,16 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
         return true;
     }
 
+    /**
+     * Hardest portion of the checkbox and listview code is the adapters. Took a
+     * very long time to understand the details. The getGroupView defines how
+     * a checkbox is going to be displayed at the first level, so the CalorieCategories.
+     * @param groupPosition
+     * @param isExpanded
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         //get group item at this position and find its name
@@ -88,6 +98,16 @@ public class FirstLevelAdapter extends BaseExpandableListAdapter{
         return convertView;
     }
 
+    /**
+     * Each individual child in the list gets its own adapter for the next level. Also, the
+     * customized view needs to be used for it to appear correctly.
+     * @param groupPosition
+     * @param childPosition
+     * @param isLastChild
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         //custom expandable list view
