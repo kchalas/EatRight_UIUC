@@ -13,10 +13,18 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import information.MenuItem;
 
+/**
+ * Calls Wolfram on a separate thread
+ */
 public class WolframAPI extends AsyncTask<MenuItem, Void, String> {
 
     private String appid = "UVWUTA-LR7R5H2VTA";
 
+    /**
+     * @param items
+     * @return String
+     * Calls Wolfram to get the nutritional info about the given item.
+     */
     @Override
     protected String doInBackground(MenuItem... items) {
         try {

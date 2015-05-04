@@ -20,10 +20,18 @@ import java.net.URL;
 
 import information.RestaurantInfo;
 
+/**
+ * Calls Locu on a separate thread
+ */
 public class LocuAPI extends AsyncTask<RestaurantInfo, Void, String> {
 
     private String appid = "aafec4f8e49e8554b7349777f57f01b51b916b9d";
 
+    /**
+     * @param rests
+     * @return String
+     * Calls Locu to get the menu of the restaurant with the given name.
+     */
     @Override
     protected String doInBackground(RestaurantInfo... rests){
         try {

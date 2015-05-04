@@ -119,6 +119,12 @@ public class Parse {
         return null;
     }
 
+    /**
+     * @param xmlData
+     * @return NutritionInfo
+     * Takes an xml file containing the nutrition info of an item from Wolfram and returns the item's
+     * calorie, protein, and dietary fiber content.
+     */
     public static NutritionInfo parseNutritionInfo(String xmlData){
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
