@@ -9,12 +9,20 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
+/**
+ * Calls Yelp on a separate thread
+ */
 public class YelpAPI extends AsyncTask<Double, Void, String> {
     private String apiKey = "yRwLKaDIIXa6Il5u9Fe2tw";
     private String consumerSecret = "zQAMp01DVxjPsRDqhsgBKAXc-Xc";
     private String token = "hqqQbpx8ThYQmU5NJVZvx7ssrYLoJips";
     private String tokenSecret = "bJqymYD0vIOy7CN8aTR4JtvkgHY";
 
+    /**
+     * @param coords
+     * @return String
+     * Calls Yelp to get a list of restaurants at the given coordinates.
+     */
     @Override
     protected String doInBackground(Double... coords){
         OAuthService service = new ServiceBuilder().provider(YelpAPIOAuth.class).apiKey(apiKey).apiSecret(consumerSecret).build();

@@ -3,6 +3,9 @@ package api;
 import org.scribe.model.Token;
 import org.scribe.builder.api.DefaultApi10a;
 
+/**
+ * Simple class needed for the Yelp OAuthorization
+ */
 public class YelpAPIOAuth extends DefaultApi10a {
 
     @Override

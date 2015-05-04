@@ -10,7 +10,17 @@ import java.util.concurrent.ExecutionException;
 
 import information.*;
 
+/**
+ * Provides an easy to use interface to the various APIs
+ */
 public class apiInterface {
+
+    /**
+     * @param lat
+     * @param lon
+     * @return ArrayList<RestaurantInfo>
+     * Calls Yelp using the given coordinates, then parses the returned json object into a list of restaurants.
+     */
     public static ArrayList<RestaurantInfo> getRestaurants(double lat, double lon) {
         if(Math.abs(lat) > 180 || Math.abs(lon) > 180){
             return null;
@@ -31,7 +41,13 @@ public class apiInterface {
         return Parse.parseRestaurants(jsonData, lat, lon);
     }
 
-
+    /**
+     * @param restaurant
+     * @return MenuProvider
+     * Calls Locu using the given restaurant name and coordinates.
+     * Parses the returned json object into a list of menu items.
+     * Creates a MenuProvider object to store and sort the returned items.
+     */
     public static MenuProvider getMenu(RestaurantInfo restaurant){
         LocuAPI apiTask = new LocuAPI();
         String jsonData = "";
@@ -60,6 +76,12 @@ public class apiInterface {
         return new MenuProvider(itemList);
     }
 
+    /**
+     * @param item
+     * @return String
+     * Calls Wolfram using the given item name and restaurant to which it belongs to.
+     * Parses the returned xml object to find the nutritional information of the item.
+     */
     public static NutritionInfo getNutritionInfo(MenuItem item){
 
         WolframAPI apiTask = new WolframAPI();

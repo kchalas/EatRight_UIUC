@@ -23,8 +23,19 @@ import javax.xml.parsers.ParserConfigurationException;
 import information.*;
 
 
-
+/**
+ * Holds the various parsing functions to parse the data from locu and yelp and wolfram.
+ */
 public class Parse {
+    /**
+     * @param jsonData
+     * @param lat
+     * @param lon
+     * @return ArrayList<RestaurantInfo>
+     *     This function takes the jsonData lat and lon (which is data taken from the yelp api)
+     *     parses the data and extracts the names of the restaurants from the Json data.
+     *     Restaurant names,lon and lat are added to a ResturantInfo object and the Resturant objects are pushed onto the ArrayList
+     */
     public static ArrayList<RestaurantInfo> parseRestaurants(String jsonData, double lat, double lon){
         try {
             ArrayList<RestaurantInfo> restList = new ArrayList<RestaurantInfo>();
@@ -57,7 +68,15 @@ public class Parse {
 
         return null;
     }
-
+    /**
+     *
+     * @param jsonData
+     * @return ArrayList<MenuItem>
+     *     This function takes the jsonData (which is data taken from the locu api) string
+     *     parses the data and extracts the names of the meals for each venue.
+     *     Meal names are added to a menuItems object and the menuItems are pushed onto the ArrayList
+     *
+     */
     public static ArrayList<MenuItem> parseMenu(String jsonData){
         try {
             ArrayList<MenuItem>  menuList = new ArrayList<MenuItem> ();
@@ -100,6 +119,12 @@ public class Parse {
         return null;
     }
 
+    /**
+     * @param xmlData
+     * @return NutritionInfo
+     * Takes an xml file containing the nutrition info of an item from Wolfram and returns the item's
+     * calorie, protein, and dietary fiber content.
+     */
     public static NutritionInfo parseNutritionInfo(String xmlData){
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

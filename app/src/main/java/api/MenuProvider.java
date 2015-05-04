@@ -10,11 +10,19 @@ import information.CalorieCategory;
 import information.MenuItem;
 import information.NutritionInfo;
 
+/**
+ * Stores the menu information and allows easy access to it
+ */
 public class MenuProvider {
     private HashMap<CalorieCategory, HashMap<MenuItem, List<String>>> menu;
     private ArrayList<CalorieCategory> categories;
     private boolean empty;
 
+    /**
+     * @param menuList
+     * Initializes the MenuProvider object by finding the nutritional info of every object
+     * and sort them based on the calorie content.
+     */
     public MenuProvider(ArrayList<MenuItem> menuList){
         empty = true;
 
@@ -64,14 +72,27 @@ public class MenuProvider {
         menu.put(categories.get(3), small);
     }
 
+    /**
+     * @return HashMap<CalorieCategory, HashMap<MenuItem, List<String>>>
+     * returns the entire menu hashmap
+     */
     public HashMap<CalorieCategory, HashMap<MenuItem, List<String>>> getMenu(){
         return menu;
     }
 
+    /**
+     * @return ArrayList<CalorieCategory>
+     * returns the list of category objects
+     */
     public ArrayList<CalorieCategory> getCategories(){
         return categories;
     }
 
+    /**
+     * @param category
+     * @return ArrayList<MenuItem>
+     * Returns all items in the given category
+     */
     public ArrayList<MenuItem> getCategory(CalorieCategory category){
         ArrayList<MenuItem> list = new ArrayList<>();
         HashMap<MenuItem, List<String>> categoryList = menu.get(category);
@@ -98,6 +119,10 @@ public class MenuProvider {
         return list;
     }
 
+    /**
+     * @return ArrayList<MenuItem>
+     * Returns all items that have been checked by the user.
+     */
     public ArrayList<MenuItem> getCheckedItems(){
         ArrayList<MenuItem> list = new ArrayList<>();
 
@@ -120,6 +145,10 @@ public class MenuProvider {
         return list;
     }
 
+    /**
+     * @return boolean
+     * returns whether or not the menu is empty.
+     */
     public boolean isEmpty(){
         return empty;
     }
