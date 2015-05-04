@@ -47,17 +47,8 @@ public class MainActivity extends ActionBarActivity {
             for(information.MenuItem item: intentList){
                 pointList.add(new Meal(item));                  //if a list was sent, rebuild it
             }
-        }else {
-
-            pointList.add(new Meal(7, 80, 500, "Min target"));
-            pointList.add(new Meal(14, 160, 500, "Max target"));
-            pointList.add(new Meal(1, 56, 830, "Baconator"));
-            pointList.add(new Meal(0, 86, 379, "Steak"));
-            pointList.add(new Meal(3, 0.5f, 91, "Apple(1)"));
-            pointList.add(new Meal(4, 1f, 71, "Orange(1)"));
-            pointList.add(new Meal(3, 26, 520, "Big Mac"));
-
         }
+
         swipeCombination=new SwipeCombination(pointList);
         makeAxisLabels(this,maxFiber,maxProtein,size);
 
