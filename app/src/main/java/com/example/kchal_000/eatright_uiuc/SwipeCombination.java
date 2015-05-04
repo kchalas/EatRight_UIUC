@@ -38,38 +38,28 @@ public class SwipeCombination {
         ArrayList<ImageButton> newList=new ArrayList<ImageButton>();
         int counter=0;
 
-        if(viewList.size()>0) {
+        if(viewList.size()>0) {                                             //if there is any selected point to swipe
 
             ArrayList<Meal> newMealList=new ArrayList<Meal>();
 
             for (Meal meal : mealList) {
-                if(!viewList.contains(meal.getImageButton())){
-                    newMealList.add(meal);
-                    newList.add(meal.getImageButton());
-                }else{
-                    meal.getImageButton().setClickable(false);
-                    meal.getImageButton().setVisibility(View.INVISIBLE);
-                    meal.getImageView().setClickable(false);
-                    meal.getImageView().setVisibility(View.INVISIBLE);
+                if(!viewList.contains(meal.getImageButton())){              //if it isn't selected for swiping
+                    newMealList.add(meal);                                  //add it to the new global meal list
+                }else{                                                      //if selected for swiping
+                    meal.getImageButton().setClickable(false);              //render it unclickable
+                    meal.getImageButton().setVisibility(View.INVISIBLE);    //and invisible both outside
+                    meal.getImageView().setVisibility(View.INVISIBLE);      //and inside
                 }
             }
-
-            /*for (View ib : viewList) {
-                if(!newList.contains(ib)){
-                ib.setClickable(false);
-                ib.setVisibility(View.INVISIBLE);
-                }
-            }*/
-
-            mealList = newMealList;
+            mealList = newMealList;                                         //update the meal list
         }
     }
 
     public boolean isSwiped(Meal meal){
-        if(viewList.contains(meal.getImageButton())){
-            return true;
+        if(viewList.contains(meal.getImageButton())){       //if meal selected fro swiping
+            return true;                                    //return true
         }
-        return false;
+        return false;                                       //if not, false
     }
 
     public void setSwiping(){

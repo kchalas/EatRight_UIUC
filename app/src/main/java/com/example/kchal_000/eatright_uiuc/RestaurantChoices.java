@@ -44,6 +44,7 @@ public class RestaurantChoices extends ActionBarActivity {
         String[] otherPallette = {"#78D5E3", "#7AF5F5", "#34DDDD", "#93E2D5"};
         String[] array = {"#6CCECB", "#F9E559", "#EF7126" ,"#8EDC9D"};
         double[] location = getLocation(); //lat , long
+
         //ArrayList<RestaurantInfo> temp = apiInterface.getRestaurants(40.11000, -88.22700);
 
         ArrayList<RestaurantInfo> temp = apiInterface.getRestaurants(location[0], location[1]);
@@ -150,10 +151,17 @@ public class RestaurantChoices extends ActionBarActivity {
      * of-the-mobiledevice-in-android
      */
     public double[] getLocation() {
+        double longitude;
+        double latitude;
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
+        if(location==null){
+            longitude = -88.22700;
+            latitude = 40.11000;
+        }else{
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+        }
         double[] loc = {latitude, longitude};
         return loc;
     }

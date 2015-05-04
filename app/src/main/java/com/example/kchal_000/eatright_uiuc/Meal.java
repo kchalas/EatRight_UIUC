@@ -2,6 +2,7 @@ package com.example.kchal_000.eatright_uiuc;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,11 +16,11 @@ import information.NutritionInfo;
 public class Meal {
 
     float fiber = 0;          //x position of the point
-    float protein = 0;          //y position of the point
-    float calories = 0;
+    float protein = 0;        //y position of the point
+    float calories = 0;       //base for position and size
     int size=0;
-    String id = "";
-    String source="";
+    String id = "";           //name
+    String source="";         //name of restaurant
     ImageButton ib;
     ImageView iv;
 
@@ -100,6 +101,13 @@ public class Meal {
             case 2: size=80+change; break; //high cal
             default: size=110; break;//very high cal
         }
-    }
+    }                         //sets size depending on total calories(0.08=20/250)(20 being the max change and 250 max calories )
     public int getSize(){return size;}
+    public boolean equals(MenuItem menuItem){
+        NutritionInfo ni=menuItem.getNutritionInfo();
+        if(id.equals(ni.getName()) && protein==(float)ni.getProtein() && fiber==(float)ni.getFiber() && calories==(float)ni.getCalories()){
+            return true;
+        }
+        return false;
+    }   //helps restoring the combination
 }

@@ -31,39 +31,36 @@ public class MealCombinationTest extends InstrumentationTestCase{
 
     public void MCombinationFiberTest() throws Exception{
 
-        float fiber = 0.2f;          //x position of the point
-        float protein = 0.1f;          //y position of the point
-        float calories = 0.3f;
+        Meal y = new Meal(0.2f, 0.1f, 0.3f, "base");
         Meal z = new Meal(0.4f, 0.8f, 0.6f, "steak");
 
-        MealCombination r = new MealCombination(fiber, protein, calories, z);
-        float correct_fiber = r.mealCombinationGetFiber(r);
+        MealCombination r = new MealCombination(y);
+        r.addDropMeal(z);
+        float correct_fiber = r.getFiber();
 
         assertEquals(0.6f, correct_fiber, 0.05);
     }
 
     public void MCombinationProteinTest() throws Exception{
 
-        float fiber = 0.2f;          //x position of the point
-        float protein = 0.1f;          //y position of the point
-        float calories = 0.3f;
+        Meal y = new Meal(0.2f, 0.1f, 0.3f, "base");
         Meal z = new Meal(0.4f, 0.8f, 0.6f, "steak");
 
-        MealCombination r = new MealCombination(fiber, protein, calories, z);
-        float correct_protein = r.mealCombinationGetProtein(r);
+        MealCombination r = new MealCombination(y);
+        r.addDropMeal(z);
+        float correct_protein = r.getProtein();
 
         assertEquals(0.9f, correct_protein, 0.05);
     }
 
     public void MCombinationCaloriesTest() throws Exception{
 
-        float fiber = 0.2f;          //x position of the point
-        float protein = 0.1f;          //y position of the point
-        float calories = 0.3f;
+        Meal y = new Meal(0.2f, 0.1f, 0.3f, "base");
         Meal z = new Meal(0.4f, 0.8f, 0.6f, "steak");
 
-        MealCombination r = new MealCombination(fiber, protein, calories, z);
-        float correct_calories = r.mealCombinationGetCalories(r);
+        MealCombination r = new MealCombination(y);
+        r.addDropMeal(z);
+        float correct_calories = r.getCalories();
 
         assertEquals(0.9f, correct_calories, 0.05);
     }
