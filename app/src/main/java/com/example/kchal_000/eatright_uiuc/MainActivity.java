@@ -2,6 +2,7 @@ package com.example.kchal_000.eatright_uiuc;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -24,28 +25,27 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View decorView = getWindow().getDecorView();
-        //decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //stops the screen from rotating
 
         ArrayList<Meal> pointList =new ArrayList<Meal>();
         final MealCombination mainCombination=new MealCombination();
         final SwipeCombination swipeCombination;
         Point size=new Point();
         float unitx, unity;
-        float maxProtein=64f;
-        float maxFiber=29f;
+        float maxProtein=64f;                                  //max protein set by client
+        float maxFiber=29f;                                    //max fiber set by client
         Intent intent=getIntent();
         Display D=getWindowManager().getDefaultDisplay();
-        ArrayList<information.MenuItem> intentList=(ArrayList<information.MenuItem>)intent.getSerializableExtra("MealList");
+        ArrayList<information.MenuItem> intentList=(ArrayList<information.MenuItem>)intent.getSerializableExtra("MealList");//receives global list(if sent)
+        String combinationMessage= intent.getStringExtra("MealCombination");                                                //and combination(if sent)
 
         D.getSize(size);
-        unity=(float)(size.x/maxProtein);
-        unitx=(float)((size.y-250)/maxFiber);
+        unity=(float)(size.x/maxProtein);                       //unit y vector
+        unitx=(float)((size.y-250)/maxFiber);                   //unit x vector
 
         if(intentList!=null && intentList.size()>0){
             for(information.MenuItem item: intentList){
-                pointList.add(new Meal(item));
+                pointList.add(new Meal(item));                  //if a list was sent, rebuild it
             }
         }else {
 
@@ -58,14 +58,16 @@ public class MainActivity extends ActionBarActivity {
             pointList.add(new Meal(3, 26, 520, "Big Mac"));
 
         }
-
         swipeCombination=new SwipeCombination(pointList);
-
         makeAxisLabels(this,maxFiber,maxProtein,size);
 
-        for(Meal meal: pointList) {
+        for(Meal meal: pointList) {                         //draw the outsides and insides of the points
             addContentView(toImageButton(meal,this,unitx,unity,mainCombination,swipeCombination, size), new ViewGroup.LayoutParams(meal.getSize(), meal.getSize()));
             addContentView(toImageView(meal,this,unitx,unity,size),new ViewGroup.LayoutParams(meal.getSize(),meal.getSize()));
+        }
+        if(combinationMessage!=null){                       //if a combination is sent, rebuild it
+            mainCombination.fromString(combinationMessage);
+            mainCombination.setFlawlessMealList((ArrayList<information.MenuItem>)intent.getSerializableExtra("CombinationList"),pointList);
         }
 
         ImageButton comb=new ImageButton(this);
@@ -73,20 +75,25 @@ public class MainActivity extends ActionBarActivity {
         comb.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ArrayList<information.MenuItem> list=new ArrayList<information.MenuItem>();
-                ArrayList<Meal> pList=swipeCombination.getList();
-                for(Meal meal: pList){
+                for(Meal meal: swipeCombination.getList()){                     //creates the global list(possible refactoring)
                     list.add(new information.MenuItem(meal));
                 }
+                ArrayList<information.MenuItem> clist=new ArrayList<information.MenuItem>();
+                for(Meal meal: mainCombination.getMealList()){                  //and the combination list(possible refactoring)
+                    clist.add(new information.MenuItem(meal));
+                }
                 Intent intent = new Intent(v.getContext(), DetailActivity.class);
-                intent.putExtra("Meal",mainCombination.toString());
-                intent.putExtra("MealList",list);
+                intent.putExtra("MealCombination",mainCombination.toString());  //passes the combinaton
+                intent.putExtra("CombinationList",clist);                       // the combination list
+                intent.putExtra("MealList",list);                               // and the global list
                 startActivity(intent);
             }
         });
 
 
-        mainCombination.setImageButton(comb,unitx, unity);
+        mainCombination.setImageButton(comb,unitx, unity);                      //sets the image and the unit vectors for future updates
         addContentView(mainCombination.getImageButton(), new ViewGroup.LayoutParams(mainCombination.getSize(), mainCombination.getSize()));
+        mainCombination.update();
         userInterface(this,size,mainCombination,swipeCombination);
     }
 
@@ -156,17 +163,17 @@ public class MainActivity extends ActionBarActivity {
 
         add=new ImageButton(this);
         add.setBackgroundResource(R.drawable.add);
-        add.setTranslationX(size.x-150);
-        add.setTranslationY(size.y - 400);
+        add.setTranslationX(size.x-150);          //correcting for its own size
+        add.setTranslationY(size.y - 400);        //correcting for lower bar
         add.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ArrayList<information.MenuItem> list=new ArrayList<information.MenuItem>();
                 ArrayList<Meal> pList=swipeCombination.getList();
                 for(Meal meal: pList){
-                    list.add(new information.MenuItem(meal));
+                    list.add(new information.MenuItem(meal));   //creating updated global list
                 }
                 Intent intent = new Intent(v.getContext(), RestaurantChoices.class);
-                intent.putExtra("MealList",list);
+                intent.putExtra("MealList",list); //passing global list
                 startActivity(intent);
             }
         });
@@ -178,18 +185,18 @@ public class MainActivity extends ActionBarActivity {
         combine.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(mealCombination.getCombine()){
-                    mealCombination.unsetCombine();
+                    mealCombination.unsetCombine();         //unsets combining
                 }else{
                     mealCombination.setCombine();
                     if(swipeCombination.getSwiping()){
-                        swipeCombination.unsetSwiping();
+                        swipeCombination.unsetSwiping();    //if swiping unsets swiping, finalizes swiping, sets combining and updates the combination
                         swipeCombination.finalizeSwipe();
                         mealCombination.update();
                     }
                 }
             }
         });
-        mealCombination.setIcon(combine);
+        mealCombination.setIcon(combine);                   //allows to change the icon remotely(without clicking on that icon)
 
         swipe=new ImageButton(this);
         swipe.setBackgroundResource(R.drawable.swipe);
@@ -198,18 +205,18 @@ public class MainActivity extends ActionBarActivity {
         swipe.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(swipeCombination.getSwiping()){
-                    swipeCombination.unsetSwiping();
+                    swipeCombination.unsetSwiping();        //unsets swiping, finalizes the swipe and updates the combination
                     swipeCombination.finalizeSwipe();
                     mealCombination.update();
                 }else{
                     swipeCombination.setSwiping();
                     if(mealCombination.getCombine()){
-                        mealCombination.unsetCombine();
+                        mealCombination.unsetCombine();     //sets swiping and unsets combination if combination is active
                     }
                 }
             }
         });
-        swipeCombination.setIcon(swipe);
+        swipeCombination.setIcon(swipe);                    //allows to change the icon remotely(without clicking on that icon)
 
         addContentView(add,new ViewGroup.LayoutParams(150,150));
         addContentView(combine,new ViewGroup.LayoutParams(150,150));
@@ -223,46 +230,45 @@ public class MainActivity extends ActionBarActivity {
 
         ib.setBackgroundResource(R.drawable.pointout);
         posx=(meal.getProtein() / (meal.getCalories())) * uy * 100;
-        if(posx>size.x){posx=size.x;}
+        if(posx>size.x){posx=size.x;}                                //stops points from appearing outside of the screen
         posy=(meal.getFiber() / (meal.getCalories()/500)) * ux;
-        if(posy>size.y){posy=size.y;}
-        ib.setTranslationX(posx-(meal.getSize()/2));
-        ib.setTranslationY(posy-(meal.getSize()/2));
+        if(posy>size.y){posy=size.y;}                                //stops points from appearing outside of the screen
+        ib.setTranslationX(posx-(meal.getSize()/2));                 //makes the center of the image the exact cordinates(instead of the upper left corner)
+        ib.setTranslationY(posy-(meal.getSize()/2));                 //makes the center of the image the exact cordinates(instead of the upper left corner)
         ib.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(mealCombination.getCombine() ){
-                    mealCombination.addDropMeal(meal);
+                    mealCombination.addDropMeal(meal);                      //adds/removes the point to the combination if combining is on
                     if (mealCombination.isCombined(meal)) {
-                        v.setBackgroundResource(R.drawable.pointoutcomb);
+                        v.setBackgroundResource(R.drawable.pointoutcomb);   //and changes the image
                     } else {
                         v.setBackgroundResource(R.drawable.pointout);
                     }
                 } else {
                     if(swipeCombination.getSwiping()){
-                        swipeCombination.addDrop(v);
+                        swipeCombination.addDrop(v);                        //adds/removes the point for swiping if swiping is on
                         if(mealCombination.isCombined(meal)){
-                            mealCombination.addDropMeal(meal);
+                            mealCombination.addDropMeal(meal);              //if a point is both combining and swiping we remove it from the combination
                         }
                         if (swipeCombination.isSwiped(meal)) {
-                            v.setBackgroundResource(R.drawable.pointoutswipe);
+                            v.setBackgroundResource(R.drawable.pointoutswipe);//and changes the image
                         } else {
                             v.setBackgroundResource(R.drawable.pointout);
                         }
                     } else {
-                        ArrayList<information.MenuItem> list=new ArrayList<information.MenuItem>();
-                        ArrayList<Meal> pList=swipeCombination.getList();
-                        for(Meal meal: pList){
-                            list.add(new information.MenuItem(meal));
+                        ArrayList<information.MenuItem> list=new ArrayList<information.MenuItem>(); //if neither swiping nor combining we move to the detail window
+                        for(Meal meal: swipeCombination.getList()){
+                            list.add(new information.MenuItem(meal));            //create a list, of MenuItems(serializable) to pass on, from the swiping updated list
                         }
                         Intent intent = new Intent(v.getContext(), DetailActivity.class);
-                        intent.putExtra("Meal",meal.toString());
-                        intent.putExtra("MealList",list);
+                        intent.putExtra("Meal",meal.toString());                 //passing the selected Meal
+                        intent.putExtra("MealList",list);                        //and global Meal list
                         startActivity(intent);
                     }
                 }
             }
         });
-        meal.setImageButton(ib);
+        meal.setImageButton(ib);                                                //saves the ImageView to render it invisible and unclickable when deleting
 
         return ib;
     }
@@ -273,15 +279,15 @@ public class MainActivity extends ActionBarActivity {
 
         iv.setBackgroundResource(drawFromCal(meal.getCalories()));
         posx=(meal.getProtein() / (meal.getCalories())) * uy * 100;
-        if(posx>size.x){posx=size.x;}
+        if(posx>size.x){posx=size.x;}                               //stops points from appearing outside of the screen
         posy=(meal.getFiber() / (meal.getCalories()/500)) * ux;
-        if(posy>size.y){posy=size.y;}
+        if(posy>size.y){posy=size.y;}                               //stops points from appearing outside of the screen
         iv.setTranslationX(posx-(meal.getSize()/2));
         iv.setTranslationY(posy-(meal.getSize()/2));
-        meal.setImageView(iv);
+        meal.setImageView(iv);                                      //saves the ImageView to render it invisible when deleting
 
         return iv;
-    }
+    } //draws the interior of the points
 
     public int drawFromCal(float calories){
         switch((int)calories/250){
@@ -290,7 +296,8 @@ public class MainActivity extends ActionBarActivity {
             case 2: return R.drawable.pointinhigh; //high cal
             default: return R.drawable.pointinhigh;//very high cal
         }
-    }
+    } // returns a Drawable ID depending on the calories
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

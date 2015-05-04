@@ -6,6 +6,8 @@ import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
+import information.MenuItem;
+
 /**
  * Created by Francisco RC on 3/8/2015.
  */
@@ -21,14 +23,6 @@ public class MealCombination {
     ImageButton ib;
     boolean isCombining=false;
 
-    public MealCombination(float f, float p, float c, Meal m) {
-        fiber=f;
-        protein=p;
-        calories=c;
-        mealList.add(m);
-        sizeFromCal();
-    }
-
     public MealCombination(Meal m) {
         fiber=m.getFiber();
         protein=m.getProtein();
@@ -40,21 +34,29 @@ public class MealCombination {
     public MealCombination(){
     }
 
-    public float mealCombinationGetFiber(MealCombination comb) {
-
-        return comb.fiber;
+    public float getFiber() {
+        return fiber;
     }
 
-    public float mealCombinationGetProtein(MealCombination comb) {
-
-        return comb.protein;
+    public float getProtein() {
+        return protein;
     }
 
-    public float mealCombinationGetCalories(MealCombination comb) {
-
-        return comb.calories;
+    public float getCalories() {
+        return calories;
     }
 
+    public String getId(){
+        String name="";
+
+        for (Meal meal : mealList) {
+            name+=meal.getId()+" and ";
+        }
+        if(name.length()>5){
+            name=name.substring(0,(name.length()-5));
+        }
+        return name;
+    } // creates a string with the names of all the meals in the mealList
 
     public void update(){
         float posx=0,posy=0;
@@ -63,32 +65,23 @@ public class MealCombination {
         protein=0;
         calories=0;
         for (Meal meal : mealList) {
-            fiber+=meal.getFiber();
-            protein+=meal.getProtein();
-            calories+=meal.getCalories();
+            fiber+=meal.getFiber();                 //updates fiber
+            protein+=meal.getProtein();             //proteing
+            calories+=meal.getCalories();           //and calories
         }
-        posx=(protein / calories) * unity * 100;
+        posx=(protein / calories) * unity * 100;    //recalculates its possition
         posy=(fiber / (calories/500)) * unitx;
         sizeFromCal();
         ViewGroup.LayoutParams params = combine.getLayoutParams();
-        params.height=size;
+        params.height=size;                         //updates its size
         params.width=size;
         combine.setLayoutParams(params);
-        combine.setTranslationX(posx-(size/2));
-        combine.setTranslationY(posy - (size / 2));
-    }
-
-    public void addMeal(Meal meal){
-        if(!mealList.contains(meal)){
-            mealList.add(meal);
-            update();
-        }
-    }
-
-    public void removeMeal(Meal meal){
-        if(mealList.contains(meal)){
-            mealList.remove(meal);
-            update();
+        if(mealList.size()>1){
+            combine.setTranslationX(posx-(size/2)); //if more than one element in the mealList
+            combine.setTranslationY(posy-(size/2)); //moves the point to the correct position(correcting for its size)
+        }else{
+            combine.setTranslationX(0-(size/2));    //if only one element in the mealList
+            combine.setTranslationY(0-(size/2));    //moves the point to allow unselecting it
         }
     }
 
@@ -134,19 +127,15 @@ public class MealCombination {
     public String toString(){
         String name="";
 
-        for (Meal meal : mealList) {
-            name+=meal.getId()+" and ";
-        }
-
-        name=name.substring(0,(name.length()-5));
+        name=getId();
 
         return name+'/'+calories+'/'+fiber+'/'+protein;
     }
     public void fromString(String string){
         String[] data=string.split("/");
-        calories=Float.valueOf(data[0]);
-        fiber=Float.valueOf(data[1]);
-        protein=Float.valueOf(data[2]);
+        calories=Float.valueOf(data[1]);
+        fiber=Float.valueOf(data[2]);
+        protein=Float.valueOf(data[3]);
     }
 
     void sizeFromCal(){
@@ -157,6 +146,24 @@ public class MealCombination {
             case 2: size=80+change; break; //high cal
             default: size=110; break;//very high cal
         }
-    }
+    }               //changes size depending on calories
     public int getSize(){return size;}
+
+    public ArrayList<Meal> getMealList(){return mealList;}
+    public void setMealList(ArrayList<MenuItem> meallist){
+        for(information.MenuItem item: meallist){
+            mealList.add(new Meal(item));
+        }
+    }                                       //sets the list if ImageButtons aren't important
+    public void setFlawlessMealList(ArrayList<MenuItem> combList, ArrayList<Meal> pointList){
+        for(information.MenuItem item: combList){
+           for(Meal meal: pointList) {
+                if(meal.equals(item)) {
+                    mealList.add(meal);
+                    meal.getImageButton().setBackgroundResource(R.drawable.pointoutcomb);
+                    break;
+                }
+           }
+        }
+    }    //sets the list if ImageButtons are important
 }
