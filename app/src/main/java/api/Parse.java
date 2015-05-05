@@ -148,7 +148,18 @@ public class Parse {
             NutritionInfo itemInfo = new NutritionInfo();
 
             int index = info.indexOf("calories ")+10;
-            int calories = Integer.parseInt(info.substring(index, info.indexOf('%', index)));
+            String intermediate = info.substring(index, info.indexOf('%', index));
+            Log.i("interm", intermediate);
+            int calories;
+            if(intermediate.contains("|")) {
+                String dim = intermediate.substring(0, intermediate.indexOf('|')-1);
+                Log.i("bar", dim);
+                calories = Integer.parseInt(intermediate.substring(0, intermediate.indexOf('|')-1));
+            }else{
+                //Log.i("came to here!!", intermediate.substring(0, intermediate.indexOf('|')-1));
+                calories = Integer.parseInt(intermediate);
+            }
+
             itemInfo.setCalories(calories);
 
             itemInfo.setFiber(getGrams("dietary fiber ", info));

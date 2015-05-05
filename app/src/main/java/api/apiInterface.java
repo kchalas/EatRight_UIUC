@@ -71,7 +71,13 @@ public class apiInterface {
 
         if(itemList == null) {
             return new MenuProvider(new ArrayList<MenuItem>());
+        }else{
+            for(MenuItem item : itemList){
+                item.setRestaurantName(restaurant.getName());
+                Log.i("items w/ rest", item.toString());
+            }
         }
+
         Log.i("menu items", ""+itemList);
         return new MenuProvider(itemList);
     }
