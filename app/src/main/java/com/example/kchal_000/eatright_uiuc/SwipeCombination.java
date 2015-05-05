@@ -3,8 +3,6 @@ package com.example.kchal_000.eatright_uiuc;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.example.kchal_000.eatright_uiuc.Meal;
-
 import java.util.ArrayList;
 
 /**

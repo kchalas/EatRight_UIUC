@@ -9,12 +9,16 @@ import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
 /**
- * Created by Clarence Elliott on 4/12/2015.
+ * Created by Clarence Elliott on 4/12/2015. A testing suite which tests the user interface
+ * of the EatRight Application. All aspects of the UI are tested and checked if responding
+ * properly.
  */
+
 public class UITest extends UiAutomatorTestCase{
 
+
     public void testAppOpen() throws UiObjectNotFoundException {
-        // First we testing the press of the HOME button.
+        // First we test the press of the HOME button.
         getUiDevice().pressHome();
         getUiDevice().pressHome();
 
@@ -32,28 +36,48 @@ public class UITest extends UiAutomatorTestCase{
 
         UiScrollable ListOfapplications = new UiScrollable(new UiSelector().scrollable(true));
 
-        // and then trying to find the application with the name "MenuOfRestaurant"
+        // and then trying to find the application with the name "EatRight_UIUC"
 
-        UiObject EatRight = ListOfapplications.getChildByText(new UiSelector().className(android.widget.TextView.class.getName()),"MenuOfRestaurant");
+        UiObject EatRight = ListOfapplications.getChildByText(new UiSelector().className(android.widget.TextView.class.getName()),"EatRight_UIUC");
         EatRight.clickAndWaitForNewWindow();
 
     }
 
+    /*
     public void testAppHomeScreen() throws UiObjectNotFoundException{
 
         testAppOpen();
         UiObject BackToRestaurantScreen = new UiObject(new UiSelector().resourceId("com.example.kchal_000.eatright_uiuc:id/buttonBack"));
         BackToRestaurantScreen.click();
 
-    }
+    } */
 
     public void testRestaurantSelection1() throws UiObjectNotFoundException{
-        testAppHomeScreen();
+        testAppOpen();
 
         UiObject Maize = new UiObject(new UiSelector().className("android.widget.Button").index(1));
         Maize.click();
 
     }
+
+    public void testRestaurantSelection2() throws UiObjectNotFoundException{
+        testAppOpen();
+        testAppHomeScreen();
+
+        UiObject Sakanaya = new UiObject(new UiSelector().className("android.widget.Button").index(3));
+        Sakanaya.click();
+
+    }
+
+    public void testRestaurantSelection3() throws UiObjectNotFoundException{
+        testAppOpen();
+        testAppHomeScreen();
+
+        UiObject Cravings = new UiObject(new UiSelector().className("android.widget.Button").index(6));
+        Cravings.click();
+
+    }
+    
 
     public void testDisplayLowCalItem() throws UiObjectNotFoundException{
         testRestaurantSelection1();
@@ -63,7 +87,7 @@ public class UITest extends UiAutomatorTestCase{
         expandLowCal.click();
 
         UiObject expandPepsi = new UiObject( new UiSelector().className("android.widget.TextView")
-                .textContains("pepsi"));
+                .textContains("Chicken Nuggets"));
         expandPepsi.click();
 
 
@@ -109,7 +133,7 @@ public class UITest extends UiAutomatorTestCase{
             testDisplayLowCalItem();
 
         UiObject expandPepsi = new UiObject( new UiSelector().className("android.widget.TextView")
-                .textContains("pepsi"));
+                .textContains("Chicken Nuggets"));
 
        UiObject pepsiCheck =  expandPepsi.getFromParent(new UiSelector().className("android.widget.CheckBox"));
        pepsiCheck.click();
@@ -121,29 +145,45 @@ public class UITest extends UiAutomatorTestCase{
         UiObject seeVisual = new UiObject( new UiSelector().resourceId("com.example.kchal_000.eatright_uiuc:id/buttonToViz"));
         seeVisual.click();
 
+
+    }
+
+    public void testAddItem() throws UiObjectNotFoundException {
+
+        testVisualization();
+
+        UiObject contentScreen = new UiObject( new UiSelector().resourceId("android:id/content"));
+        UiObject addItem = contentScreen.getChild(new UiSelector().className("android.widget.ImageButton").index(5));
+        addItem.click();
+
+    }
+
+    public void testCombination() throws UiObjectNotFoundException{
+        testVisualization();
+        UiObject contentScreen = new UiObject( new UiSelector().resourceId("android:id/content"));
+        UiObject combo = contentScreen.getChild(new UiSelector().className("android.widget.ImageButton").index(5));
+        combo.click();
+
+        combo.click();
+
+    }
+
+    public void testViewDetails() throws UiObjectNotFoundException{
+        testVisualization();
+        UiObject contentScreen = new UiObject( new UiSelector().resourceId("android:id/content"));
+        UiObject details = contentScreen.getChild(new UiSelector().className("android.widget.ImageButton").index(14));
+        details.click();
+
+        UiObject goBack = contentScreen.getChild(new UiSelector().className("android.widget.Button").textContains("Back"));
+        goBack.click();
+
+
     }
 
     public void resetDeviceUI() throws UiObjectNotFoundException{
         getUiDevice().pressHome();
     }
 
-    /*
-    public void testRestaurantSelection2() throws UiObjectNotFoundException{
-        testAppOpen();
-        testAppHomeScreen();
-
-        UiObject Sakanaya = new UiObject(new UiSelector().className("android.widget.Button").index(3));
-        Sakanaya.click();
-
-    }
-
-    public void testRestaurantSelection3() throws UiObjectNotFoundException{
-        testAppOpen();
-        testAppHomeScreen();
-
-        UiObject Cravings = new UiObject(new UiSelector().className("android.widget.Button").index(6));
-        Cravings.click();
-
-    }
-    */
+    
+   
 }
