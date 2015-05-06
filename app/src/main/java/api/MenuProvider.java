@@ -56,6 +56,8 @@ public class MenuProvider {
                     big.put(item, itemInfoList);
                 }
 
+                item.setNutritionInfo(itemInfo);
+
                 empty = false;
             }
             if(counter >= limit){
