@@ -31,7 +31,8 @@ public class MenuProvider {
         HashMap<MenuItem, List<String>> medium = new HashMap<>();
         HashMap<MenuItem, List<String>> big = new HashMap<>();
         HashMap<MenuItem, List<String>> veryBig = new HashMap<>();
-
+        int limit = 25;
+        int counter = 0;
         //List of details - List<String>
         for(MenuItem item : menuList){
             NutritionInfo itemInfo = apiInterface.getNutritionInfo(item);
@@ -43,8 +44,8 @@ public class MenuProvider {
                 itemInfoList.add(Double.toString(itemInfo.getCalories()));
                 itemInfoList.add(Double.toString(itemInfo.getFiber()));
                 itemInfoList.add(Double.toString(itemInfo.getProtein()));
-
-
+                item.setNutritionInfo(itemInfo);
+                counter++;
                 if (itemInfo.getCalories() < 250) {
                     small.put(item, itemInfoList);
                 } else if (itemInfo.getCalories() >= 250 && itemInfo.getCalories() < 500) {
@@ -56,6 +57,9 @@ public class MenuProvider {
                 }
 
                 empty = false;
+            }
+            if(counter >= limit){
+                break;
             }
         }
 
